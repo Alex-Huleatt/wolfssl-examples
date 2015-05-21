@@ -21,11 +21,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
-#include <cyassl/options.h>
-#include <cyassl/ctaocrypt/aes.h>
-#include <cyassl/ctaocrypt/sha256.h>
-#include <cyassl/ctaocrypt/random.h>
-#include <cyassl/ctaocrypt/pwdbased.h>
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/aes.h>
+#include <wolfssl/wolfcrypt/sha256.h>
+#include <wolfssl/wolfcrypt/random.h>
+#include <wolfssl/wolfcrypt/pwdbased.h>
 
 #define SALT_SIZE 8
 

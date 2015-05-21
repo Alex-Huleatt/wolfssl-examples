@@ -33,10 +33,10 @@ def main():
 		else:
 			assert False, "unhandled option"
 	print(dire)
-	for file in os.listdir('.'):
+	for file in os.listdir(dire):
 		if file.endswith(".c"):
 			print(file)
-			conv(file,di)
+			conv(dire+file,di)
 
 if __name__ == "__main__":
 	main()
