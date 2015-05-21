@@ -23,7 +23,7 @@
 #include    <string.h>
 #include    <errno.h>
 #include    <arpa/inet.h>
-#include    <cyassl/ssl.h>          /* CyaSSL security library */
+#include    <wolfssl/ssl.h>          /* CyaSSL security library */
 
 #define MAXDATASIZE  4096           /* maximum acceptable amount of data */
 #define SERV_PORT    11111          /* define default port number */
@@ -33,7 +33,7 @@ const char* cert = "../certs/ca-cert.pem";
 /* 
  * clients initial contact with server. (socket to connect, security layer)
  */
-int ClientGreet(int sock, CYASSL* ssl)
+int ClientGreet(int sock, WOLFSSL* ssl)
 {
     /* data to send to the server, data recieved from the server */
     char    sendBuff[MAXDATASIZE], rcvBuff[MAXDATASIZE] = {0};
@@ -42,16 +42,16 @@ int ClientGreet(int sock, CYASSL* ssl)
     printf("Message for server:\t");
     fgets(sendBuff, MAXDATASIZE, stdin);
 
-    if (CyaSSL_write(ssl, sendBuff, strlen(sendBuff)) != strlen(sendBuff)) {
+    if (wolfSSL_write(ssl, sendBuff, strlen(sendBuff)) != strlen(sendBuff)) {
         /* the message is not able to send, or error trying */
-        ret = CyaSSL_get_error(ssl, 0);
+        ret = wolfSSL_get_error(ssl, 0);
         printf("Write error: Error: %i\n", ret);
         return EXIT_FAILURE;
     }
 
-    if (CyaSSL_read(ssl, rcvBuff, MAXDATASIZE) < 0) {
+    if (wolfSSL_read(ssl, rcvBuff, MAXDATASIZE) < 0) {
         /* the server failed to send data, or error trying */
-        ret = CyaSSL_get_error(ssl, 0);
+        ret = wolfSSL_get_error(ssl, 0);
         printf("Read error. Error: %i\n", ret);
         return EXIT_FAILURE;
     }
@@ -65,38 +65,38 @@ int ClientGreet(int sock, CYASSL* ssl)
  */
 int Security(int sock)
 {
-    CYASSL_CTX* ctx;
-    CYASSL*     ssl;    /* create CYASSL object */
+    WOLFSSL_CTX* ctx;
+    WOLFSSL*     ssl;    /* create WOLFSSL object */
     int         ret = 0;
 
-    CyaSSL_Init();      /* initialize CyaSSL */
+    wolfSSL_Init();      /* initialize CyaSSL */
 
-    /* create and initiLize CYASSL_CTX structure */
-    if ((ctx = CyaSSL_CTX_new(CyaTLSv1_2_client_method())) == NULL) {
+    /* create and initiLize WOLFSSL_CTX structure */
+    if ((ctx = wolfSSL_CTX_new(wolfTLSv1_2_client_method())) == NULL) {
         printf("SSL_CTX_new error.\n");
         return EXIT_FAILURE;
     }
 
     /* load CA certificates into CyaSSL_CTX. which will verify the server */
-    if (CyaSSL_CTX_load_verify_locations(ctx, cert, 0) != SSL_SUCCESS) {
+    if (wolfSSL_CTX_load_verify_locations(ctx, cert, 0) != SSL_SUCCESS) {
         printf("Error loading %s. Please check the file.\n", cert);
         return EXIT_FAILURE;
     }
-    if ((ssl = CyaSSL_new(ctx)) == NULL) {
-        printf("CyaSSL_new error.\n");
+    if ((ssl = wolfSSL_new(ctx)) == NULL) {
+        printf("wolfSSL_new error.\n");
         return EXIT_FAILURE;
     }
-    CyaSSL_set_fd(ssl, sock);
+    wolfSSL_set_fd(ssl, sock);
 
-    ret = CyaSSL_connect(ssl);
+    ret = wolfSSL_connect(ssl);
     if (ret == SSL_SUCCESS) {
         ret = ClientGreet(sock, ssl);
     }
 
     /* frees all data before client termination */
-    CyaSSL_free(ssl);
-    CyaSSL_CTX_free(ctx);
-    CyaSSL_Cleanup();
+    wolfSSL_free(ssl);
+    wolfSSL_CTX_free(ctx);
+    wolfSSL_Cleanup();
 
     return ret;
 }

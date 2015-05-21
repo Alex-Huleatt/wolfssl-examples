@@ -36,16 +36,16 @@
 /* 
  * Handles response to client.
  */
-int respond(CYASSL* ssl)
+int respond(WOLFSSL* ssl)
 {
     int  n;              /* length of string read */
     char buf[MAXLINE];   /* string read from client */
     char response[] = "I hear ya for shizzle";
     memset(buf, 0, MAXLINE);
-    n = CyaSSL_read(ssl, buf, MAXLINE);
+    n = wolfSSL_read(ssl, buf, MAXLINE);
     if (n > 0) {
         printf("%s\n", buf);
-        if (CyaSSL_write(ssl, response, strlen(response)) > strlen(response)) {
+        if (wolfSSL_write(ssl, response, strlen(response)) > strlen(response)) {
             printf("Fatal error : respond: write error\n");
             return 1;
         }
@@ -61,7 +61,7 @@ int respond(CYASSL* ssl)
 /*
  * Identify which psk key to use.
  */
-static unsigned int my_psk_server_cb(CYASSL* ssl, const char* identity, unsigned char* key,
+static unsigned int my_psk_server_cb(WOLFSSL* ssl, const char* identity, unsigned char* key,
                               unsigned int key_max_len)
 {
     (void)ssl;
@@ -85,20 +85,20 @@ int main()
     struct sockaddr_in  cliAddr, servAddr;
     char                buff[MAXLINE];
     socklen_t           cliLen;
-    CYASSL_CTX*         ctx;
+    WOLFSSL_CTX*         ctx;
 
-    CyaSSL_Init();
+    wolfSSL_Init();
     
     /* create ctx and configure certificates */
-    if ((ctx = CyaSSL_CTX_new(CyaSSLv23_server_method())) == NULL) {
-        printf("Fatal error : CyaSSL_CTX_new error\n");
+    if ((ctx = wolfSSL_CTX_new(wolfSSLv23_server_method())) == NULL) {
+        printf("Fatal error : wolfSSL_CTX_new error\n");
         return 1;
     }
    
     /* use psk suite for security */ 
-    CyaSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
-    CyaSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
-    if (CyaSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
+    wolfSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
+    wolfSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
+    if (wolfSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
                                    != SSL_SUCCESS) {
         printf("Fatal error : server can't set cipher list\n");
         return 1;
@@ -138,7 +138,7 @@ int main()
     
     /* main loop for accepting and responding to clients */
     for ( ; ; ) {
-        CYASSL* ssl;
+        WOLFSSL* ssl;
         
         cliLen = sizeof(cliAddr);
         connfd = accept(listenfd, (struct sockaddr *) &cliAddr, &cliLen);
@@ -151,18 +151,18 @@ int main()
                    inet_ntop(AF_INET, &cliAddr.sin_addr, buff, sizeof(buff)),
                    ntohs(cliAddr.sin_port));
             
-            /* create CYASSL object and respond */
-            if ((ssl = CyaSSL_new(ctx)) == NULL) {
-                printf("Fatal error : CyaSSL_new error\n");
+            /* create WOLFSSL object and respond */
+            if ((ssl = wolfSSL_new(ctx)) == NULL) {
+                printf("Fatal error : wolfSSL_new error\n");
                 return 1;
             }
-            CyaSSL_set_fd(ssl, connfd);
+            wolfSSL_set_fd(ssl, connfd);
             if (respond(ssl) != 0)
                 return 1;
             
             /* closes the connections after responding */
-            CyaSSL_shutdown(ssl);
-            CyaSSL_free(ssl);
+            wolfSSL_shutdown(ssl);
+            wolfSSL_free(ssl);
             
             if (close(connfd) == -1) {
                 printf("Fatal error : close error\n");
@@ -171,8 +171,8 @@ int main()
         }
     }
     /* free up memory used by CyaSSL */
-    CyaSSL_CTX_free(ctx);
-    CyaSSL_Cleanup();
+    wolfSSL_CTX_free(ctx);
+    wolfSSL_Cleanup();
 
     return 0;
 }

@@ -35,12 +35,12 @@
 #define LISTENQ     1024
 #define SERV_PORT   11111
 
-CYASSL_CTX* ctx; /* global so it's shared by threads */
+WOLFSSL_CTX* ctx; /* global so it's shared by threads */
 
 /*
  * Identify which psk key to use.
  */
-static inline unsigned int my_psk_server_cb(CYASSL* ssl, const char* identity,
+static inline unsigned int my_psk_server_cb(WOLFSSL* ssl, const char* identity,
                                      unsigned char* key,
                                      unsigned int key_max_len)
 {
@@ -63,7 +63,7 @@ static inline unsigned int my_psk_server_cb(CYASSL* ssl, const char* identity,
  */
 void* cyassl_thread(void* fd)
 {
-    CYASSL* ssl;
+    WOLFSSL* ssl;
     int connfd = *((int*)fd);
     int  n;             
     char buf[MAXLINE];  
@@ -71,19 +71,19 @@ void* cyassl_thread(void* fd)
    
     memset(buf, 0, MAXLINE);
 
-    /* create CYASSL object */
-    if ((ssl = CyaSSL_new(ctx)) == NULL) {
-        printf("Fatal error : CyaSSL_new error");
+    /* create WOLFSSL object */
+    if ((ssl = wolfSSL_new(ctx)) == NULL) {
+        printf("Fatal error : wolfSSL_new error");
         /* place signal for forced error exit here */
     }
         
-    CyaSSL_set_fd(ssl, connfd);
+    wolfSSL_set_fd(ssl, connfd);
 
     /* respond to client */
-    n = CyaSSL_read(ssl, buf, MAXLINE);
+    n = wolfSSL_read(ssl, buf, MAXLINE);
     if (n > 0) {
         printf("%s\n", buf);
-        if (CyaSSL_write(ssl, response, strlen(response)) != strlen(response)) {
+        if (wolfSSL_write(ssl, response, strlen(response)) != strlen(response)) {
             printf("Fatal error :respond: write error\n");
             /* place signal for forced error exit here */
         }
@@ -94,8 +94,8 @@ void* cyassl_thread(void* fd)
     }
    
     /* closes the connections after responding */
-    CyaSSL_shutdown(ssl);
-    CyaSSL_free(ssl);
+    wolfSSL_shutdown(ssl);
+    wolfSSL_free(ssl);
     if (close(connfd) == -1) {
         printf("Fatal error : close error\n"); 
         /* place signal for forced error exit here */
@@ -114,15 +114,15 @@ int main()
     pthread_t           thread;
     void*               cyassl_thread(void*);
 
-    CyaSSL_Init();
+    wolfSSL_Init();
     
-    if ((ctx = CyaSSL_CTX_new(CyaSSLv23_server_method())) == NULL)
-        printf("Fatal error : CyaSSL_CTX_new error\n");
+    if ((ctx = wolfSSL_CTX_new(wolfSSLv23_server_method())) == NULL)
+        printf("Fatal error : wolfSSL_CTX_new error\n");
 
     /* use psk suite for security */ 
-    CyaSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
-    CyaSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
-    if (CyaSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
+    wolfSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
+    wolfSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
+    if (wolfSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
                                    != SSL_SUCCESS)
         printf("Fatal error : server can't set cipher list");
 
@@ -180,8 +180,8 @@ int main()
     }
 
     /* free up memory used by cyassl */
-    CyaSSL_CTX_free(ctx);
-    CyaSSL_Cleanup();
+    wolfSSL_CTX_free(ctx);
+    wolfSSL_Cleanup();
 
     return 0;
 }

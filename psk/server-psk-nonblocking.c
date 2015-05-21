@@ -82,14 +82,14 @@ int tcp_select(int sockfd, int to_sec)
  * Function to handle nonblocking. Loops until tcp_select notifies that it's
  * ready for action. 
  */
-int NonBlockingSSL(CYASSL* ssl)
+int NonBlockingSSL(WOLFSSL* ssl)
 {
     int ret;
     int error;
     int select_ret;
-    int sockfd = CyaSSL_get_fd(ssl);
-    ret = CyaSSL_accept(ssl);
-    error = CyaSSL_get_error(ssl, 0);
+    int sockfd = wolfSSL_get_fd(ssl);
+    ret = wolfSSL_accept(ssl);
+    error = wolfSSL_get_error(ssl, 0);
     while (ret != SSL_SUCCESS && (error == SSL_ERROR_WANT_READ ||
                                   error == SSL_ERROR_WANT_WRITE)) {
         int currTimeout = 1;
@@ -105,8 +105,8 @@ int NonBlockingSSL(CYASSL* ssl)
         /* if tcp_select signals ready try to accept otherwise continue loop*/
         if ((select_ret == TEST_RECV_READY) || 
             (select_ret == TEST_ERROR_READY)) {
-            ret = CyaSSL_accept(ssl);
-            error = CyaSSL_get_error(ssl, 0);
+            ret = wolfSSL_accept(ssl);
+            error = wolfSSL_get_error(ssl, 0);
         }
         else if (select_ret == TEST_TIMEOUT) {
             error = SSL_ERROR_WANT_READ;
@@ -128,7 +128,7 @@ int NonBlockingSSL(CYASSL* ssl)
 /* 
  * Handles response to client.
  */
-int respond(CYASSL* ssl)
+int respond(WOLFSSL* ssl)
 {
     int    n;              /* length of string read */
     char   buf[MAXLINE];   /* string read from client */
@@ -138,7 +138,7 @@ int respond(CYASSL* ssl)
     do {
         if (NonBlockingSSL(ssl) != SSL_SUCCESS)
             return 1;
-        n = CyaSSL_read(ssl, buf, MAXLINE);
+        n = wolfSSL_read(ssl, buf, MAXLINE);
         if (n > 0) {
             printf("%s\n", buf);
         } 
@@ -147,7 +147,7 @@ int respond(CYASSL* ssl)
     
     if (NonBlockingSSL(ssl) != SSL_SUCCESS)
         return 1;
-    if (CyaSSL_write(ssl, response, strlen(response)) != strlen(response)) {
+    if (wolfSSL_write(ssl, response, strlen(response)) != strlen(response)) {
         printf("Fatal error : respond: write error\n");
         return 1;
     }
@@ -158,7 +158,7 @@ int respond(CYASSL* ssl)
 /*
  * Used for finding psk value.
  */
-static inline unsigned int my_psk_server_cb(CYASSL* ssl, const char* identity,
+static inline unsigned int my_psk_server_cb(WOLFSSL* ssl, const char* identity,
                                    unsigned char* key, unsigned int key_max_len)
 {
     (void)ssl;
@@ -183,19 +183,19 @@ int main()
     struct sockaddr_in  cliAddr, servAddr;
     char                buff[MAXLINE];
     socklen_t           cliLen;
-    CYASSL_CTX*         ctx;
+    WOLFSSL_CTX*         ctx;
 
-    CyaSSL_Init();
+    wolfSSL_Init();
     
-    if ((ctx = CyaSSL_CTX_new(CyaSSLv23_server_method())) == NULL) {
-        printf("Fatal error : CyaSSL_CTX_new error\n");
+    if ((ctx = wolfSSL_CTX_new(wolfSSLv23_server_method())) == NULL) {
+        printf("Fatal error : wolfSSL_CTX_new error\n");
         return 1;
     }
 
     /* use psk suite for security */ 
-    CyaSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
-    CyaSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
-    if (CyaSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
+    wolfSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
+    wolfSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
+    if (wolfSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
         != SSL_SUCCESS)
         printf("Fatal error : server can't set cipher list\n");
 
@@ -226,7 +226,7 @@ int main()
         
     /* main loop for accepting and responding to clients */
     for ( ; ; ) {
-        CYASSL* ssl;
+        WOLFSSL* ssl;
         
         /* listen to the socket */   
         if (listen(listenfd, LISTENQ) < 0) {
@@ -247,15 +247,15 @@ int main()
                    inet_ntop(AF_INET, &cliAddr.sin_addr, buff, sizeof(buff)),
                    ntohs(cliAddr.sin_port));
     
-            /* create CYASSL object */
-            if ((ssl = CyaSSL_new(ctx)) == NULL) {
-                printf("Fatal error : CyaSSL_new error\n");
+            /* create WOLFSSL object */
+            if ((ssl = wolfSSL_new(ctx)) == NULL) {
+                printf("Fatal error : wolfSSL_new error\n");
                 return 1;   
             }
-            CyaSSL_set_fd(ssl, connfd);
+            wolfSSL_set_fd(ssl, connfd);
 
             /* set CyaSSL and socket to non blocking and respond */
-            CyaSSL_set_using_nonblock(ssl, 1);
+            wolfSSL_set_using_nonblock(ssl, 1);
             if (fcntl(connfd, F_SETFL, O_NONBLOCK) < 0) {
                 printf("Fatal error : fcntl set failed\n");
                 return 1;
@@ -265,8 +265,8 @@ int main()
                 return 1;
 
             /* closes the connections after responding */
-            CyaSSL_shutdown(ssl);
-            CyaSSL_free(ssl);
+            wolfSSL_shutdown(ssl);
+            wolfSSL_free(ssl);
             if (close(connfd) == -1) {
                 printf("Fatal error : close error\n");
                 return 1;
@@ -274,8 +274,8 @@ int main()
         }
     }
     /* free up memory used by cyassl */
-    CyaSSL_CTX_free(ctx);
-    CyaSSL_Cleanup();
+    wolfSSL_CTX_free(ctx);
+    wolfSSL_Cleanup();
     
     return 0;
 }

@@ -34,14 +34,14 @@
 #include <errno.h>
 
 /* include the CyaSSL library for our TLS 1.2 security */
-#include <cyassl/ssl.h>
+#include <wolfssl/ssl.h>
 
 #define DEFAULT_PORT 11111
 
-int AcceptAndRead(CYASSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in 
+int AcceptAndRead(WOLFSSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in 
     clientAddr);
 
-int AcceptAndRead(CYASSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in 
+int AcceptAndRead(WOLFSSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in 
     clientAddr)
 {
         /* Create our reply message */
@@ -58,17 +58,17 @@ int AcceptAndRead(CYASSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in
     /* If it connects, read in and reply to the client */
     else {
         printf("Client connected successfully\n");
-        CYASSL*     ssl;
+        WOLFSSL*     ssl;
 
-        if ( (ssl = CyaSSL_new(ctx)) == NULL) {
-            fprintf(stderr, "CyaSSL_new error.\n");
+        if ( (ssl = wolfSSL_new(ctx)) == NULL) {
+            fprintf(stderr, "wolfSSL_new error.\n");
             exit(EXIT_FAILURE);
         }
 
         /* direct our ssl to our clients connection */
-        CyaSSL_set_fd(ssl, connd);
+        wolfSSL_set_fd(ssl, connd);
 
-        printf("Using Non-Blocking I/O: %d\n", CyaSSL_get_using_nonblock(
+        printf("Using Non-Blocking I/O: %d\n", wolfSSL_get_using_nonblock(
             ssl));
 
         for ( ; ; ) {
@@ -79,21 +79,21 @@ int AcceptAndRead(CYASSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in
             memset(&buff, 0, sizeof(buff));
 
             /* Read the client data into our buff array */
-            if ((ret = CyaSSL_read(ssl, buff, sizeof(buff)-1)) > 0) {
+            if ((ret = wolfSSL_read(ssl, buff, sizeof(buff)-1)) > 0) {
                 /* Print any data the client sends to the console */
                 printf("Client: %s\n", buff);
                 
                 /* Reply back to the client */
-                if ((ret = CyaSSL_write(ssl, reply, sizeof(reply)-1)) 
+                if ((ret = wolfSSL_write(ssl, reply, sizeof(reply)-1)) 
                     < 0)
                 {
-                    printf("CyaSSL_write error = %d\n", CyaSSL_get_error(ssl, ret));
+                    printf("wolfSSL_write error = %d\n", wolfSSL_get_error(ssl, ret));
                 }
             }
             /* if the client disconnects break the loop */
             else {
                 if (ret < 0)
-                    printf("CyaSSL_read error = %d\n", CyaSSL_get_error(ssl
+                    printf("wolfSSL_read error = %d\n", wolfSSL_get_error(ssl
                         ,ret));
                 else if (ret == 0)
                     printf("The client has closed the connection.\n");
@@ -101,7 +101,7 @@ int AcceptAndRead(CYASSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in
                 break;
             }
         }
-        CyaSSL_free(ssl);           /* Free the CYASSL object */
+        wolfSSL_free(ssl);           /* Free the WOLFSSL object */
     }
     close(connd);               /* close the connected socket */
 
@@ -112,7 +112,7 @@ int AcceptAndRead(CYASSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in
 int main()
 {
     /* Create a ctx pointer for our ssl */
-    CYASSL_CTX* ctx;
+    WOLFSSL_CTX* ctx;
 
     /* 
      * Creates a socket that uses an internet IP address,
@@ -126,7 +126,7 @@ int main()
     struct sockaddr_in serverAddr, clientAddr;
 
     /* Initialize CyaSSL */
-    CyaSSL_Init();
+    wolfSSL_Init();
 
     /* If positive value, the socket is valid */
     if (sockfd == -1) {
@@ -134,22 +134,22 @@ int main()
         return EXIT_FAILURE;        /* Kill the server with exit status 1 */        
     }
 
-    /* create and initialize CYASSL_CTX structure */
-    if ((ctx = CyaSSL_CTX_new(CyaTLSv1_2_server_method())) == NULL) {
-        fprintf(stderr, "CyaSSL_CTX_new error.\n");
+    /* create and initialize WOLFSSL_CTX structure */
+    if ((ctx = wolfSSL_CTX_new(wolfTLSv1_2_server_method())) == NULL) {
+        fprintf(stderr, "wolfSSL_CTX_new error.\n");
         return EXIT_FAILURE;
     }
 
-    /* Load server certificate into CYASSL_CTX */
-    if (CyaSSL_CTX_use_certificate_file(ctx, "../certs/server-cert.pem", 
+    /* Load server certificate into WOLFSSL_CTX */
+    if (wolfSSL_CTX_use_certificate_file(ctx, "../certs/server-cert.pem", 
                 SSL_FILETYPE_PEM) != SSL_SUCCESS) {
         fprintf(stderr, "Error loading certs/server-cert.pem, please check"
                 "the file.\n");
         return EXIT_FAILURE;
     }
 
-    /* Load server key into CYASSL_CTX */
-    if (CyaSSL_CTX_use_PrivateKey_file(ctx, "../certs/server-key.pem", 
+    /* Load server key into WOLFSSL_CTX */
+    if (wolfSSL_CTX_use_PrivateKey_file(ctx, "../certs/server-key.pem", 
                 SSL_FILETYPE_PEM) != SSL_SUCCESS) {
         fprintf(stderr, "Error loading certs/server-key.pem, please check"
                 "the file.\n");
@@ -184,7 +184,7 @@ int main()
         }
     }
 
-    CyaSSL_CTX_free(ctx);   /* Free CYASSL_CTX */
-    CyaSSL_Cleanup();       /* Free CyaSSL */
+    wolfSSL_CTX_free(ctx);   /* Free WOLFSSL_CTX */
+    wolfSSL_Cleanup();       /* Free CyaSSL */
     return EXIT_SUCCESS;
 }

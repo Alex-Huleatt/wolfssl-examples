@@ -27,7 +27,7 @@
 #include    <arpa/inet.h>
 #include    <signal.h>
 #include    <unistd.h>
-#include    <cyassl/ssl.h>  /* must include this to use CyaSSL security */
+#include    <wolfssl/ssl.h>  /* must include this to use CyaSSL security */
 
 #define     MAXLINE 256      /* max text line length */
 #define     SERV_PORT 11111  /* default port*/
@@ -35,7 +35,7 @@
 /*
  *psk client set up.
  */
-static inline unsigned int My_Psk_Client_Cb(CYASSL* ssl, const char* hint,
+static inline unsigned int My_Psk_Client_Cb(WOLFSSL* ssl, const char* hint,
         char* identity, unsigned int id_max_len, unsigned char* key, 
         unsigned int key_max_len)
 {
@@ -60,19 +60,19 @@ static inline unsigned int My_Psk_Client_Cb(CYASSL* ssl, const char* hint,
  * this function will send the inputted string to the server and then 
  * recieve the string from the server outputing it to the termial
  */ 
-int SendReceive(CYASSL* ssl)
+int SendReceive(WOLFSSL* ssl)
 {
     char sendline[MAXLINE]="Hello Server"; /* string to send to the server */
     char recvline[MAXLINE]; /* string received from the server */
         
 	/* write string to the server */
-	if (CyaSSL_write(ssl, sendline, MAXLINE) != sizeof(sendline)) {
+	if (wolfSSL_write(ssl, sendline, MAXLINE) != sizeof(sendline)) {
 		printf("Write Error to Server\n");
 		return 1;
     }
         
 	/* flags if the Server stopped before the client could end */
-    if (CyaSSL_read(ssl, recvline, MAXLINE) < 0 ) {
+    if (wolfSSL_read(ssl, recvline, MAXLINE) < 0 ) {
     	printf("Client: Server Terminated Prematurely!\n");
         return 1;
     }
@@ -86,8 +86,8 @@ int SendReceive(CYASSL* ssl)
 int main(int argc, char **argv)
 {
     int ret, sockfd;
-    CYASSL* ssl;
-    CYASSL_CTX* ctx;
+    WOLFSSL* ssl;
+    WOLFSSL_CTX* ctx;
     struct sockaddr_in servaddr;;
 
     /* must include an ip address of this will flag */
@@ -96,10 +96,10 @@ int main(int argc, char **argv)
         return 1;
     }
     
-    CyaSSL_Init();  /* initialize cyaSSL */
+    wolfSSL_Init();  /* initialize cyaSSL */
     
-    /* create and initialize CYASSL_CTX structure */
-    if ((ctx = CyaSSL_CTX_new(CyaTLSv1_2_client_method())) == NULL) {
+    /* create and initialize WOLFSSL_CTX structure */
+    if ((ctx = wolfSSL_CTX_new(wolfTLSv1_2_client_method())) == NULL) {
         fprintf(stderr, "SSL_CTX_new error.\n");
         return 1;
     }
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     }
     
     /* set up pre shared keys */
-    CyaSSL_CTX_set_psk_client_callback(ctx, My_Psk_Client_Cb);
+    wolfSSL_CTX_set_psk_client_callback(ctx, My_Psk_Client_Cb);
 	
     /* attempts to make a connection on a socket */
     ret = connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
@@ -134,13 +134,13 @@ int main(int argc, char **argv)
     }
     
     /* creat cyassl object after each tcp connct */
-    if ( (ssl = CyaSSL_new(ctx)) == NULL) {
-        fprintf(stderr, "CyaSSL_new error.\n");
+    if ( (ssl = wolfSSL_new(ctx)) == NULL) {
+        fprintf(stderr, "wolfSSL_new error.\n");
         return 1;
     }
 	
     /* associate the file descriptor with the session */
-    ret = CyaSSL_set_fd(ssl, sockfd);
+    ret = wolfSSL_set_fd(ssl, sockfd);
 	
     if (ret != SSL_SUCCESS){
         return 1;
@@ -153,12 +153,12 @@ int main(int argc, char **argv)
 	}
 
     /* cleanup */
-    CyaSSL_free(ssl);
+    wolfSSL_free(ssl);
 
     /* when completely done using SSL/TLS, free the 
      * cyassl_ctx object */
-    CyaSSL_CTX_free(ctx);
-    CyaSSL_Cleanup();
+    wolfSSL_CTX_free(ctx);
+    wolfSSL_Cleanup();
 
     /* exit client */
     return ret;
