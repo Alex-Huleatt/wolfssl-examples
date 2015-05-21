@@ -18,7 +18,6 @@ def main():
 	di = {}
 	for i in replacers:
 		splat = i.split(",")
-		print(splat[0],splat[1])
 		di[splat[0]] = splat[1]
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "d:", ["dir="])
