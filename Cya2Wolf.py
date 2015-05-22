@@ -32,11 +32,12 @@ def main():
 	global RECURSIVE, VERBOSE
 
 	#construct the dictionary from the ssl.txt file
-	replacers = open("ssl.txt").read().split("\n") 
+	replacers = open("license.txt").read().split("$$$") 
 	di = {}
 	for i in replacers:
-		splat = i.split(",")
+		splat = i.split("|")
 		di[splat[0]] = splat[1]
+		print(splat[0],'\n\n',splat[1])
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "hvrd:", [])
 	except getopt.GetoptError as err:
