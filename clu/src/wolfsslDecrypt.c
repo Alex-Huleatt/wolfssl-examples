@@ -169,7 +169,7 @@ int wolfsslDecrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
             else if (strcmp(mode, "ctr") == 0) {
                 /* if mode is ctr */
                 wc_AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
-                AesCtrEncrypt(&aes, output, input, tempMax);
+                wc_AesCtrEncrypt(&aes, output, input, tempMax);
             }
 #endif
         }
@@ -194,14 +194,14 @@ int wolfsslDecrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
 #endif
 #ifdef HAVE_CAMELLIA
         if (strcmp(alg, "camellia") == 0) {
-            ret = CamelliaSetKey(&camellia, key, block, iv);
+            ret = wc_CamelliaSetKey(&camellia, key, block, iv);
             if (ret != 0) {
                 fclose(inFile);
                 fclose(outFile);
                 wolfsslFreeBins(input, output, NULL, NULL, NULL);
                 return ret;
             }
-            CamelliaCbcDecrypt(&camellia, output, input, tempMax);
+            wc_CamelliaCbcDecrypt(&camellia, output, input, tempMax);
         }
 #endif
         if (currLoopFlag == lastLoopFlag) {

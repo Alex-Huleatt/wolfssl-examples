@@ -201,7 +201,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
             else if (strcmp(mode, "ctr") == 0) {
                 /* if mode is ctr */
                 wc_AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
-                AesCtrEncrypt(&aes, output, input, tempMax);
+                wc_AesCtrEncrypt(&aes, output, input, tempMax);
             }
 #endif
         }

@@ -120,7 +120,7 @@ int wolfsslBenchmark(int timer, int* option)
         start = wolfsslGetTime();
         alarm(timer);
 
-        wc_wc_AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
+        wc_AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
         while (loop) {
             wc_AesCtrEncrypt(&aes, cipher, plain, AES_BLOCK_SIZE);
             blocks++;
@@ -204,7 +204,7 @@ int wolfsslBenchmark(int timer, int* option)
 
         wc_CamelliaSetKey(&camellia, key, CAMELLIA_BLOCK_SIZE, iv);
         while (loop) {
-            CamelliaCbcEncrypt(&camellia, cipher, plain, CAMELLIA_BLOCK_SIZE);
+            wc_CamelliaCbcEncrypt(&camellia, cipher, plain, CAMELLIA_BLOCK_SIZE);
             blocks++;
             currTime = wolfsslGetTime();
             stop = currTime - start;
