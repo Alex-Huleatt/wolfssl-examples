@@ -1,3 +1,8 @@
+'''@author AlexHuleatt
+This script modifies any of the old CyaSSL files to be updated
+It actually changes them, so use with discretion
+'''
+
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>

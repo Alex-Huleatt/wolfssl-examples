@@ -1,14 +1,19 @@
+'''@author AlexHuleatt
+This script modifies any of the old CyaSSL files to be updated
+It actually changes them, so use with discretion
+'''
+
 import re
 import os
 import getopt
 import sys
-import mimetypes
 
 RECURSIVE = False
 VERBOSE = False
 fcount = 0
 
 def conv(fname,di):
+	'''Convert a given file using the provided mapping'''
 	global fcount
 	if VERBOSE:print('>',fname)
 	f = open(fname,'r+')
@@ -24,7 +29,9 @@ def conv(fname,di):
 
 def main():
 	global RECURSIVE, VERBOSE
-	replacers = open("ssl.txt").read().split("\n")
+
+	#construct the dictionary from the ssl.txt file
+	replacers = open("ssl.txt").read().split("\n") 
 	di = {}
 	for i in replacers:
 		splat = i.split(",")
@@ -45,7 +52,8 @@ def main():
 			VERBOSE = True
 		elif o=='-h':
 			print('Usage : Description')
-			print('-d directory/to/use : allows the script to start at the given directory, default is the current working directory')
+			print('-d directory/to/use : allows the script to start \
+			at the given directory, default is the current working directory')
 			print('-r : recursively search all subdirectories')
 			print('-v : verbose printing enabled')
 			print('-h : help')
@@ -54,7 +62,6 @@ def main():
 			assert False, "unhandled option"
 
 	if VERBOSE: print("---Verbose---")
-
 
 	if RECURSIVE:
 		if VERBOSE:print("---Recursive search---")
