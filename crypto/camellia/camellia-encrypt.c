@@ -36,7 +36,7 @@ int GenerateKey(RNG* rng, byte* key, int size, byte* salt, int pad)
 {
     int ret;
 
-    ret = RNG_GenerateBlock(rng, salt, SALT_SIZE-1);
+    ret = wc_RNG_GenerateBlock(rng, salt, SALT_SIZE-1);
     if (ret != 0)
         return -1020;
 
@@ -44,7 +44,7 @@ int GenerateKey(RNG* rng, byte* key, int size, byte* salt, int pad)
         salt[0] = 0;            /* message is padded */
 
     /* stretches key */
-    ret = PBKDF2(key, key, strlen((const char*)key), salt, SALT_SIZE, 4096, 
+    ret = wc_PBKDF2(key, key, strlen((const char*)key), salt, SALT_SIZE, 4096, 
         size, SHA256);
     if (ret != 0)
         return -1030;
@@ -84,7 +84,7 @@ int CamelliaEncrypt(Camellia* cam, byte* key, int size, FILE* inFile,
     input = malloc(length);
     output = malloc(length);
 
-    ret = InitRng(&rng);
+    ret = wc_InitRng(&rng);
     if (ret != 0) {
         printf("Failed to initialize random number generator\n");
         return -1030;
@@ -101,22 +101,22 @@ int CamelliaEncrypt(Camellia* cam, byte* key, int size, FILE* inFile,
         input[i] = padCounter;
     }
 
-    ret = RNG_GenerateBlock(&rng, iv, CAMELLIA_BLOCK_SIZE);
+    ret = wc_RNG_GenerateBlock(&rng, iv, CAMELLIA_BLOCK_SIZE);
     if (ret != 0)
         return -1020;
 
     /* stretches key to fit size */
-    ret = GenerateKey(&rng, key, size, salt, padCounter);
+    ret = wc_GenerateKey(&rng, key, size, salt, padCounter);
     if (ret != 0) 
         return -1040;
 
     /* sets key */
-    ret = CamelliaSetKey(cam, key, CAMELLIA_BLOCK_SIZE, iv);
+    ret = wc_CamelliaSetKey(cam, key, CAMELLIA_BLOCK_SIZE, iv);
     if (ret != 0)
         return -1001;
 
     /* encrypts the message to the ouput based on input length + padding */
-    CamelliaCbcEncrypt(cam, output, input, length);
+    wc_CamelliaCbcEncrypt(cam, output, input, length);
 
     /* writes to outFile */
     fwrite(salt, 1, SALT_SIZE, outFile);
@@ -161,7 +161,7 @@ int CamelliaDecrypt(Camellia* cam, byte* key, int size, FILE* inFile,
     input = malloc(aSize);
     output = malloc(aSize);
 
-    InitRng(&rng);
+    wc_InitRng(&rng);
 
     /* reads from inFile and wrties whatever is there to the input array */
     ret = fread(input, 1, length, inFile);
@@ -179,13 +179,13 @@ int CamelliaDecrypt(Camellia* cam, byte* key, int size, FILE* inFile,
     }
 
     /* replicates old key if keys match */
-    ret = PBKDF2(key, key, strlen((const char*)key), salt, SALT_SIZE, 4096, 
+    ret = wc_PBKDF2(key, key, strlen((const char*)key), salt, SALT_SIZE, 4096, 
         size, SHA256);
     if (ret != 0)
         return -1050;
 
     /* sets key */
-    ret = CamelliaSetKey(cam, key, CAMELLIA_BLOCK_SIZE, iv);
+    ret = wc_CamelliaSetKey(cam, key, CAMELLIA_BLOCK_SIZE, iv);
     if (ret != 0)
         return -1002;
 
@@ -196,7 +196,7 @@ int CamelliaDecrypt(Camellia* cam, byte* key, int size, FILE* inFile,
         input[i] = input[i + (CAMELLIA_BLOCK_SIZE + SALT_SIZE)];
     }
     /* decrypts the message to output based on input length + padding */
-    CamelliaCbcDecrypt(cam, output, input, length);
+    wc_CamelliaCbcDecrypt(cam, output, input, length);
 
     if (salt[0] != 0) {
         /* reduces length based on number of padded elements  */
