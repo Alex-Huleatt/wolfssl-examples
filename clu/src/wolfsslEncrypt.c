@@ -214,7 +214,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
                 wolfsslFreeBins(input, output, NULL, NULL, NULL);
                 return ret;
             }
-            ret = wc_Des3_cbcEncrypt(&des3, output, input, tempMax);
+            ret = wc_Des3_CbcEncrypt(&des3, output, input, tempMax);
             if (ret != 0) {
                 printf("wc_Des3_cbcEncrypt failed.\n");
                 wolfsslFreeBins(input, output, NULL, NULL, NULL);
