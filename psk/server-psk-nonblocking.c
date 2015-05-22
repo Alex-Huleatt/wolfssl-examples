@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <cyassl/ssl.h> /* include cyassl security */
+#include <wolfssl/ssl.h> /* include wolfssl security */
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -45,7 +45,7 @@ enum{
 
 
 /*
- * Pulled in from cyassl/test.h
+ * Pulled in from wolfssl/test.h
  * Select the tcp, used when nonblocking. Checks the status of the connection.
  */
 int tcp_select(int sockfd, int to_sec)
@@ -194,7 +194,7 @@ int main()
 
     /* use psk suite for security */ 
     wolfSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
-    wolfSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
+    wolfSSL_CTX_use_psk_identity_hint(ctx, "wolfssl server");
     if (wolfSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
         != SSL_SUCCESS)
         printf("Fatal error : server can't set cipher list\n");
@@ -273,7 +273,7 @@ int main()
             }
         }
     }
-    /* free up memory used by cyassl */
+    /* free up memory used by wolfssl */
     wolfSSL_CTX_free(ctx);
     wolfSSL_Cleanup();
     

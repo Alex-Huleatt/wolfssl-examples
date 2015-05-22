@@ -133,7 +133,7 @@ int main(int argc, char **argv)
         return 1;
     }
     
-    /* creat cyassl object after each tcp connct */
+    /* creat wolfssl object after each tcp connct */
     if ( (ssl = wolfSSL_new(ctx)) == NULL) {
         fprintf(stderr, "wolfSSL_new error.\n");
         return 1;
@@ -156,7 +156,7 @@ int main(int argc, char **argv)
     wolfSSL_free(ssl);
 
     /* when completely done using SSL/TLS, free the 
-     * cyassl_ctx object */
+     * wolfssl_ctx object */
     wolfSSL_CTX_free(ctx);
     wolfSSL_Cleanup();
 

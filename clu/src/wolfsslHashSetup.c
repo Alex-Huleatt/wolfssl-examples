@@ -39,10 +39,10 @@ int wolfsslHashSetup(int argc, char** argv)
 #ifndef NO_SHA256
             , "sha256"
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
             , "sha384"
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
             , "sha512"
 #endif
 #ifdef HAVE_BLAKE2
@@ -134,12 +134,12 @@ int wolfsslHashSetup(int argc, char** argv)
         size = SHA256_DIGEST_SIZE;
 #endif
 
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
     if (strcmp(alg, "sha384") == 0)
         size = SHA384_DIGEST_SIZE;
 #endif
 
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
     if (strcmp(alg, "sha512") == 0)
         size = SHA512_DIGEST_SIZE;
 #endif

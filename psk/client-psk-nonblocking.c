@@ -28,7 +28,7 @@
 #include    <unistd.h>
 #include    <fcntl.h>
 #include    <sys/ioctl.h>
-#include    <cyassl/ssl.h>  /* must include this to use CyaSSL security */
+#include    <wolfssl/ssl.h>  /* must include this to use CyaSSL security */
 
 #define     MAXLINE 256      /* max text line length */
 #define     SERV_PORT 11111  /* default port*/
@@ -71,7 +71,7 @@ static inline int tcp_select(int socketfd, int to_sec)
 }
 
 /*
- * sets up and uses nonblocking protocols using cyassl 
+ * sets up and uses nonblocking protocols using wolfssl 
  */
 static int NonBlockingSSL_Connect(WOLFSSL* ssl)
 {
@@ -261,7 +261,7 @@ int main(int argc, char **argv)
     wolfSSL_free(ssl);
 
     /* when completely done using SSL/TLS, free the 
-     * cyassl_ctx object */
+     * wolfssl_ctx object */
     wolfSSL_CTX_free(ctx);
     wolfSSL_Cleanup();
 	

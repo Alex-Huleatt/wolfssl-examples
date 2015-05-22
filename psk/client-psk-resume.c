@@ -27,7 +27,7 @@
 #include    <arpa/inet.h>
 #include    <signal.h>
 #include    <unistd.h>
-#include    <cyassl/ssl.h>  /* must include this to use CyaSSL security */
+#include    <wolfssl/ssl.h>  /* must include this to use CyaSSL security */
 
 #define     MAXLINE 256      /* max text line length */
 #define     SERV_PORT 11111  /* default port*/

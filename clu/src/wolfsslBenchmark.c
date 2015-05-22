@@ -105,7 +105,7 @@ int wolfsslBenchmark(int timer, int* option)
     }
     i++;
 #endif
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
     /* aes-ctr test */
     if (option[i] == 1) {
         plain = malloc(AES_BLOCK_SIZE);
@@ -326,7 +326,7 @@ int wolfsslBenchmark(int timer, int* option)
     }
     i++;
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
     /* sha384 test */
     if (option[i] == 1) {
         Sha384 sha384;
@@ -359,7 +359,7 @@ int wolfsslBenchmark(int timer, int* option)
     }
     i++;
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
     /* sha512 test */
     if (option[i] == 1) {
         Sha512 sha512;

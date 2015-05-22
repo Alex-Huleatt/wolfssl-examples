@@ -197,7 +197,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
                     return ENCRYPT_ERROR;
                 }
             }
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
             else if (strcmp(mode, "ctr") == 0) {
                 /* if mode is ctr */
                 AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
@@ -287,7 +287,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
     XMEMSET(iv, 0 , block);
     XMEMSET(alg, 0, size);
     XMEMSET(mode, 0 , block);
-    /* Use the cyassl free for rng */
+    /* Use the wolfssl free for rng */
     FreeRng(&rng);
     wolfsslFreeBins(input, output, NULL, NULL, NULL);
     return 0;

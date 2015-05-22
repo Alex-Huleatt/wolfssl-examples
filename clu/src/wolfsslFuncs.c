@@ -82,10 +82,10 @@ void wolfsslVerboseHelp()
 #ifndef NO_SHA256
                 ,"sha256"
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
                 ,"sha384"
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
                 ,"sha512"
 #endif
 #ifdef HAVE_BLAKE2
@@ -98,7 +98,7 @@ void wolfsslVerboseHelp()
 #ifndef NO_AES
             "aes-cbc"
 #endif
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
                 , "aes-ctr"
 #endif
 #ifndef NO_DES3
@@ -116,10 +116,10 @@ void wolfsslVerboseHelp()
 #ifndef NO_SHA256
                 , "sha256"
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
                 , "sha384"
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
                 , "sha512"
 #endif
 #ifdef HAVE_BLAKE2
@@ -133,7 +133,7 @@ void wolfsslVerboseHelp()
 #ifndef NO_AES
         printf("aes-cbc-128\t\taes-cbc-192\t\taes-cbc-256\n");
 #endif
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
         printf("aes-ctr-128\t\taes-ctr-192\t\taes-ctr-256\n");
 #endif
 #ifndef NO_DES3
@@ -167,7 +167,7 @@ void wolfsslEncryptHelp()
 #ifndef NO_AES
         printf("aes-cbc-128\t\taes-cbc-192\t\taes-cbc-256\n");
 #endif
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
         printf("aes-ctr-128\t\taes-ctr-192\t\taes-ctr-256\n");
 #endif
 #ifndef NO_DES3
@@ -195,7 +195,7 @@ void wolfsslDecryptHelp()
 #ifndef NO_AES
         printf("aes-cbc-128\t\taes-cbc-192\t\taes-cbc-256\n");
 #endif
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
         printf("aes-ctr-128\t\taes-ctr-192\t\taes-ctr-256\n");
 #endif
 #ifndef NO_DES3
@@ -230,10 +230,10 @@ void wolfsslHashHelp()
 #ifndef NO_SHA256
                 ,"sha256"
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
                 ,"sha384"
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
                 ,"sha512"
 #endif
 #ifdef HAVE_BLAKE2
@@ -263,7 +263,7 @@ void wolfsslBenchHelp()
 #ifndef NO_AES
             "aes-cbc"
 #endif
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
                 , "aes-ctr"
 #endif
 #ifndef NO_DES3
@@ -281,10 +281,10 @@ void wolfsslBenchHelp()
 #ifndef NO_SHA256
                 , "sha256"
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
                 , "sha384"
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
                 , "sha512"
 #endif
 #ifdef HAVE_BLAKE2
@@ -327,7 +327,7 @@ int wolfsslGetAlgo(char* name, char** alg, char** mode, int* size)
 #endif
     };
     const char* acceptMode[] = {"cbc"
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
         , "ctr"
 #endif
     };

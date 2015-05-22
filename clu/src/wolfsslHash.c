@@ -91,12 +91,12 @@ int wolfsslHash(char* in, char* out, char* alg, int size)
         ret = Sha256Hash(input, length, output);
     }
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
     else if (strcmp(alg, "sha384") == 0) {
         ret = Sha384Hash(input, length, output);
     }
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
     else if (strcmp(alg, "sha512") == 0) {
         ret = Sha512Hash(input, length, output);
     }

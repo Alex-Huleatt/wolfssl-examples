@@ -25,14 +25,14 @@
  *
  */
 
-#include <cyassl/options.h>
-#include <cyassl/ctaocrypt/types.h>
-#include <cyassl/ctaocrypt/coding.h>
-#include <cyassl/ctaocrypt/error-crypt.h>
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/types.h>
+#include <wolfssl/wolfcrypt/coding.h>
+#include <wolfssl/wolfcrypt/error-crypt.h>
 #include <stdio.h>
 #include <include/wolfssl.h>
 
-/* free up to 5 binary buffers using cyassl abstraction layer */
+/* free up to 5 binary buffers using wolfssl abstraction layer */
 void wolfsslFreeBins(byte* b1, byte* b2, byte* b3, byte* b4, byte* b5)
 {
    XFREE(b1, NULL, DYNAMIC_TYPE_TMP_BUFFER);

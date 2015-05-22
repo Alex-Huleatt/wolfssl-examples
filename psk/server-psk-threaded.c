@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <cyassl/ssl.h>     /* include CyaSSL security */
-#include <cyassl/options.h> /* included for option sync */
+#include <wolfssl/ssl.h>     /* include CyaSSL security */
+#include <wolfssl/options.h> /* included for option sync */
 #include <pthread.h>        /* used for concurrent threading */
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -61,7 +61,7 @@ static inline unsigned int my_psk_server_cb(WOLFSSL* ssl, const char* identity,
 /*
  * Process handled by a thread.
  */
-void* cyassl_thread(void* fd)
+void* wolfssl_thread(void* fd)
 {
     WOLFSSL* ssl;
     int connfd = *((int*)fd);
@@ -112,7 +112,7 @@ int main()
     char                buff[MAXLINE];
     socklen_t           cliLen;
     pthread_t           thread;
-    void*               cyassl_thread(void*);
+    void*               wolfssl_thread(void*);
 
     wolfSSL_Init();
     
@@ -121,7 +121,7 @@ int main()
 
     /* use psk suite for security */ 
     wolfSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
-    wolfSSL_CTX_use_psk_identity_hint(ctx, "cyassl server");
+    wolfSSL_CTX_use_psk_identity_hint(ctx, "wolfssl server");
     if (wolfSSL_CTX_set_cipher_list(ctx, "PSK-AES128-CBC-SHA256")
                                    != SSL_SUCCESS)
         printf("Fatal error : server can't set cipher list");
@@ -169,7 +169,7 @@ int main()
                    inet_ntop(AF_INET, &cliAddr.sin_addr, buff, sizeof(buff)),
                    ntohs(cliAddr.sin_port));
             
-            if (pthread_create(&thread, NULL, &cyassl_thread, (void*) &connfd) 
+            if (pthread_create(&thread, NULL, &wolfssl_thread, (void*) &connfd) 
                                != 0) {
                 return 1;   
             }
@@ -179,7 +179,7 @@ int main()
         }
     }
 
-    /* free up memory used by cyassl */
+    /* free up memory used by wolfssl */
     wolfSSL_CTX_free(ctx);
     wolfSSL_Cleanup();
 

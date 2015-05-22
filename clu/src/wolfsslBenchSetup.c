@@ -29,7 +29,7 @@ int wolfsslBenchSetup(int argc, char** argv)
 #ifndef NO_AES
         "aes-cbc"
 #endif
-#ifdef CYASSL_AES_COUNTER
+#ifdef WOLFSSL_AES_COUNTER
             , "aes-ctr"
 #endif
 #ifndef NO_DES3
@@ -47,10 +47,10 @@ int wolfsslBenchSetup(int argc, char** argv)
 #ifndef NO_SHA256
             , "sha256"
 #endif
-#ifdef CYASSL_SHA384
+#ifdef WOLFSSL_SHA384
             , "sha384"
 #endif
-#ifdef CYASSL_SHA512
+#ifdef WOLFSSL_SHA512
             , "sha512"
 #endif
 #ifdef HAVE_BLAKE2
