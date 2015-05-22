@@ -2,14 +2,14 @@
  *
  * Copyright (C) 2006-2014 wolfSSL Inc.
  *
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <pthread.h>
 
-/* Include the CyaSSL library for our TLS 1.2 security */
+/* Include the wolfSSL library for our TLS 1.2 security */
 #include <wolfssl/ssl.h>
 
 #define DEFAULT_PORT 11111
@@ -145,7 +145,7 @@ int main()
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     serverAddr.sin_port        = htons(DEFAULT_PORT);
 
-    /* initialize CyaSSL */
+    /* initialize wolfSSL */
     wolfSSL_Init();
 
     /* If positive value, the socket is valid */
@@ -197,7 +197,7 @@ int main()
     }
 
     wolfSSL_CTX_free(ctx);   /* Free WOLFSSL_CTX */
-    wolfSSL_Cleanup();       /* Free CyaSSL */
+    wolfSSL_Cleanup();       /* Free wolfSSL */
     
     return EXIT_SUCCESS;
 }

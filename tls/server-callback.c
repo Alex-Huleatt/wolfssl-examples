@@ -2,14 +2,14 @@
  *
  * Copyright (C) 2006-2014 wolfSSL Inc.
  *
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -168,12 +168,12 @@ int Server(word16 port)
     if (wolfSSL_CTX_use_certificate_file(ctx, svrCert, SSL_FILETYPE_PEM)
                 != SSL_SUCCESS)
         err_sys("can't load server cert file,"
-                    "Please run from CyaSSL home dir");
+                    "Please run from wolfSSL home dir");
 
     if (wolfSSL_CTX_use_PrivateKey_file(ctx, svrKey, SSL_FILETYPE_PEM)
                 != SSL_SUCCESS)
         err_sys("can't load server key file, "
-                    "Please run from CyaSSL home dir");
+                    "Please run from wolfSSL home dir");
         
     /*sets the IO callback methods*/
     wolfSSL_SetIORecv(ctx, CbIORecv);
@@ -210,7 +210,7 @@ int Server(word16 port)
             err_sys("Fatal error : close error");
     }
    
-    /* free up memory used by CyaSSL */
+    /* free up memory used by wolfSSL */
     wolfSSL_CTX_free(ctx);
 
     return 0;

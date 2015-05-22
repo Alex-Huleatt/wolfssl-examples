@@ -2,7 +2,7 @@ wolfSSL Example Applications
 ============================
 
 This repository contains example applications, written in C, which 
-demonstrate how to use the CyaSSL lightweight SSL/TLS library for secure 
+demonstrate how to use the wolfSSL lightweight SSL/TLS library for secure 
 communication.
 
 Each directory represents a unique topic (SSL/TLS, DTLS, PSK, etc.) and 
@@ -31,7 +31,7 @@ This directory contains examples of using DTLS, with client and server
 examples demonstrating UDP, DTLS, non-blocking, session resumption, 
 and multi-threading.
 
-When compiling CyaSSL for use with these examples, CyaSSL will need to be 
+When compiling wolfSSL for use with these examples, wolfSSL will need to be 
 compiled with DTLS support:
 
 ```
@@ -52,7 +52,7 @@ This directory contains examples of using PSK, with client and server examples
 demonstrating TCP/IP, PSK, non-blocking, session resumption, and 
 multi-threading.
 
-When compiling CyaSSL for use with these examples, CyaSSL will need to be 
+When compiling wolfSSL for use with these examples, wolfSSL will need to be 
 compiled with PSK support:
 
 ```
@@ -84,7 +84,7 @@ make
 
 When necessary, examples will use the example certificates and keys located 
 in the ./certs directory. These certificates and keys have been pulled in from 
-the main CyaSSL repository.
+the main wolfSSL repository.
 
 ## Support
 

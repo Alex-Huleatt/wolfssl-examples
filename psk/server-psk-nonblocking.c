@@ -1,14 +1,14 @@
 /* server-psk-nonblocking.c
  * A server ecample using a TCP connection with PSK security and non blocking. 
  *  
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -254,7 +254,7 @@ int main()
             }
             wolfSSL_set_fd(ssl, connfd);
 
-            /* set CyaSSL and socket to non blocking and respond */
+            /* set wolfSSL and socket to non blocking and respond */
             wolfSSL_set_using_nonblock(ssl, 1);
             if (fcntl(connfd, F_SETFL, O_NONBLOCK) < 0) {
                 printf("Fatal error : fcntl set failed\n");

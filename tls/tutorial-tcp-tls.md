@@ -1,7 +1,7 @@
 Tutorial
 ========
 
-This tutorial will teach you how to install and run a basic TCP Server and Client. As well as how to incorporate CyaSSL TLS and some additional features on top of these basic examples. It is expected that you have a basic understanding of a simple tcp server/client. If not, before continueing please take a moment to look over the `server-tcp.c` and `client-tcp.c` file which contains the basic tcp server that we will be expanding upon in this tutorial.
+This tutorial will teach you how to install and run a basic TCP Server and Client. As well as how to incorporate wolfSSL TLS and some additional features on top of these basic examples. It is expected that you have a basic understanding of a simple tcp server/client. If not, before continueing please take a moment to look over the `server-tcp.c` and `client-tcp.c` file which contains the basic tcp server that we will be expanding upon in this tutorial.
 
 
 First you will need `gcc` and `make` installed on your terminal. You can do this by opening a new terminal window and typing:
@@ -9,8 +9,8 @@ First you will need `gcc` and `make` installed on your terminal. You can do this
     sudo apt-get install gcc make
 
 ## Index
-1. [Incorporating CyaSSL TLS](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#incorporating-wolfssl-tls)
-  * [Installing CyaSSL](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#installing-wolfssl)
+1. [Incorporating wolfSSL TLS](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#incorporating-wolfssl-tls)
+  * [Installing wolfSSL](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#installing-wolfssl)
 2. [Server TLS Tutorial](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#server-tls-tutorial)
   * [Basic TLS Server](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#basic-tls-server)
   * [Adding Multi-threading](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#adding-server-multi-threading)
@@ -21,22 +21,22 @@ First you will need `gcc` and `make` installed on your terminal. You can do this
   * [Adding Non-blocking I/O](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#adding-client-non-blocking-io)
 4. [Starting the TLS Client & Server](https://github.com/wolfSSL/wolfssl-examples/blob/master/tls/tutorial-tcp-tls.md#starting-the-tls-client--server)
 
-## Incorporating CyaSSL TLS
-To incorporate CyaSSL TLS into your client or server you need to first configure and install the CyaSSL library to your linux machine. After you have done that, you can then run `make` to compile the TLS versions into an executeable.
+## Incorporating wolfSSL TLS
+To incorporate wolfSSL TLS into your client or server you need to first configure and install the wolfSSL library to your linux machine. After you have done that, you can then run `make` to compile the TLS versions into an executeable.
 
-### Installing CyaSSL
-+ Download and extract the CyaSSL package from [here.](http://wolfssl.com/yaSSL/Products-wolfssl.html)
+### Installing wolfSSL
++ Download and extract the wolfSSL package from [here.](http://wolfssl.com/yaSSL/Products-wolfssl.html)
 + In terminal, navigate to the root of the extracted folder.
 + Type `./configure` press enter. Wait until it finishes configuring.
 + Type `make` press enter. 
-+ Type `sudo make install`, this will install the CyaSSL libraries to your machine.
++ Type `sudo make install`, this will install the wolfSSL libraries to your machine.
 
-CyaSSL libraries should now be installed to your machine and ready to use. You can now make and run the server and client examples.
+wolfSSL libraries should now be installed to your machine and ready to use. You can now make and run the server and client examples.
 
 ## Server TLS Tutorial
 
 ### Basic TLS Server
-To begin, we will be re-writing the basic `server-tcp.c` with CyaSSL. The structure of the file will be almost identical. To begin, we will need to include the wolfssl libraries with the rest of our includes at the top of the file: 
+To begin, we will be re-writing the basic `server-tcp.c` with wolfSSL. The structure of the file will be almost identical. To begin, we will need to include the wolfssl libraries with the rest of our includes at the top of the file: 
 
 ```c
 #include <stdio.h>
@@ -48,7 +48,7 @@ To begin, we will be re-writing the basic `server-tcp.c` with CyaSSL. The struct
 #include <stdlib.h>
 #include <errno.h>
 
-/* include the CyaSSL library for our TLS 1.2 security */
+/* include the wolfSSL library for our TLS 1.2 security */
 #include <wolfssl/ssl.h>
 ```
 Next we will add our `#define DEFAULT_PORT 11111` and the prototype for our `AcceptAndRead` function:
@@ -59,7 +59,7 @@ Next we will add our `#define DEFAULT_PORT 11111` and the prototype for our `Acc
 int AcceptAndRead(WOLFSSL_CTX* ctx, socklen_t sockfd, struct sockaddr_in 
     clientAddr);
 ```
-Now we will build our `main()` function for the program. What happens here is we create a WOLFSSL context pointer and a socket. We then initialize CyaSSL so that it can be used. After that we tell CyaSSL where our certificate and private key files are that we want our server to use. We then attach our socket to the `DEFAULT_PORT` that we defined above. The last thing to do in the main function is to listen for a new connection on the socket that we binded to our port above. When we get a new connection, we call the `AcceptAndRead` function. The main function should look like: 
+Now we will build our `main()` function for the program. What happens here is we create a WOLFSSL context pointer and a socket. We then initialize wolfSSL so that it can be used. After that we tell wolfSSL where our certificate and private key files are that we want our server to use. We then attach our socket to the `DEFAULT_PORT` that we defined above. The last thing to do in the main function is to listen for a new connection on the socket that we binded to our port above. When we get a new connection, we call the `AcceptAndRead` function. The main function should look like: 
 
 ```c
 int main()
@@ -78,7 +78,7 @@ int main()
     /* Server and client socket address structures */
     struct sockaddr_in serverAddr, clientAddr;
 
-    /* Initialize CyaSSL */
+    /* Initialize wolfSSL */
     wolfSSL_Init();
 
     /* If positive value, the socket is valid */
@@ -138,7 +138,7 @@ int main()
     }
 
     wolfSSL_CTX_free(ctx);   /* Free WOLFSSL_CTX */
-    wolfSSL_Cleanup();       /* Free CyaSSL */
+    wolfSSL_Cleanup();       /* Free wolfSSL */
     return EXIT_SUCCESS;
 }
 ```
@@ -221,7 +221,7 @@ And with that, you should now have a basic TLS server that accepts a connection,
 ### Adding Server Multi-threading
 To add multi-threading support to the basic `tls-server.c` that we created above, we will be using pthreads. Multi-threading will allow the server to handle multiple client connections at the same time. It will pass each new connection off into it's own thread. To do this we will create a new function called `ThreadHandler`. This function will be passed off to its own thread when a new client connection is accepted. We will also be making some minor changes to our `main()` and `AcceptAndRead` functions.
 
-We will start by adding a `#include <pthread.h>` followed by removing our `WOLFSSL_CTX* ctx` from our main() function and making it global. This will allow our threads to have access to it. Because we are no long passing it into the `AcceptAndRead` function, we need to modify the prototype function to no longer take a `CyaSSL_CTX` parameter. The top of your file should now look like:
+We will start by adding a `#include <pthread.h>` followed by removing our `WOLFSSL_CTX* ctx` from our main() function and making it global. This will allow our threads to have access to it. Because we are no long passing it into the `AcceptAndRead` function, we need to modify the prototype function to no longer take a `wolfSSL_CTX` parameter. The top of your file should now look like:
 
 ```c
 #include <stdio.h>
@@ -234,7 +234,7 @@ We will start by adding a `#include <pthread.h>` followed by removing our `WOLFS
 #include <errno.h>
 #include <pthread.h>
 
-/* Include the CyaSSL library for our TLS 1.2 security */
+/* Include the wolfSSL library for our TLS 1.2 security */
 #include <wolfssl/ssl.h>
 
 #define DEFAULT_PORT 11111
@@ -370,7 +370,7 @@ To start, let's create our enumerator and prototype functions. The top of your f
 #include <sys/fcntl.h>
 #include <errno.h>
 
-/* Include the CyaSSL library for our TLS 1.2 security */
+/* Include the wolfSSL library for our TLS 1.2 security */
 #include <wolfssl/ssl.h>
 
 #define DEFAULT_PORT 11111
@@ -387,7 +387,7 @@ int NonBlocking_ReadWriteAccept(WOLFSSL* ssl, socklen_t socketfd,
     enum read_write_t rw);
 ```
 
-We will start by modifying our `main()` function. Because we are using non-blocking we need to give our socket specific options. To do this, we will make a `setsockopt()` call just above our `CyaSSL_init()` call. It should look something like the following: 
+We will start by modifying our `main()` function. Because we are using non-blocking we need to give our socket specific options. To do this, we will make a `setsockopt()` call just above our `wolfSSL_init()` call. It should look something like the following: 
 
 ```c
  /* If positive value, the socket is valid */
@@ -400,7 +400,7 @@ We will start by modifying our `main()` function. Because we are using non-block
         < 0)                    
         printf("setsockopt SO_REUSEADDR failed\n");
 
-    /* Initialize CyaSSL */
+    /* Initialize wolfSSL */
     wolfSSL_Init();
 ```
 
@@ -605,7 +605,7 @@ int Security(int sock)
     WOLFSSL*     ssl;    /* create WOLFSSL object */
     int         ret = 0;
 
-    wolfSSL_Init();      /* initialize CyaSSL */
+    wolfSSL_Init();      /* initialize wolfSSL */
 
     /* create and initiLize WOLFSSL_CTX structure */
     if ((ctx = wolfSSL_CTX_new(wolfTLSv1_2_client_method())) == NULL) {
@@ -613,7 +613,7 @@ int Security(int sock)
         return EXIT_FAILURE;
     }
 
-    /* load CA certificates into CyaSSL_CTX. which will verify the server */
+    /* load CA certificates into wolfSSL_CTX. which will verify the server */
     if (wolfSSL_CTX_load_verify_locations(ctx, cert, 0) != SSL_SUCCESS) {
         printf("Error loading %s. Please check the file.\n", cert);
         return EXIT_FAILURE;
@@ -681,7 +681,7 @@ if (connect(sock, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
 /* sets new file discriptior */
 wolfSSL_set_fd(sslResume, sock);
 
-/* reconects to CyaSSL */
+/* reconects to wolfSSL */
 ret = wolfSSL_connect(sslResume);
 if (ret != SSL_SUCCESS) {
     return ret;

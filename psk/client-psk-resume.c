@@ -3,14 +3,14 @@
  *
  * Copyright (C) 2006-2014 wolfSSL Inc.
  *
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -27,7 +27,7 @@
 #include    <arpa/inet.h>
 #include    <signal.h>
 #include    <unistd.h>
-#include    <wolfssl/ssl.h>  /* must include this to use CyaSSL security */
+#include    <wolfssl/ssl.h>  /* must include this to use wolfSSL security */
 
 #define     MAXLINE 256      /* max text line length */
 #define     SERV_PORT 11111  /* default port*/
@@ -132,7 +132,7 @@ int main(int argc, char **argv){
         return 1;
     }
     
-    /* create CyaSSL object after each tcp connect */
+    /* create wolfSSL object after each tcp connect */
     if ( (ssl = wolfSSL_new(ctx)) == NULL) {
         fprintf(stderr, "wolfSSL_new error.\n");
         return 1;
@@ -148,7 +148,7 @@ int main(int argc, char **argv){
     session   = wolfSSL_get_session(ssl);
     sslResume = wolfSSL_new(ctx);
 
-    /* shut down CyaSSL */
+    /* shut down wolfSSL */
     wolfSSL_shutdown(ssl);
 
     /* close connection */
@@ -195,7 +195,7 @@ int main(int argc, char **argv){
     else
         printf("didn't reuse session id!!!\n");
 
-    /* shut down CyaSSL */
+    /* shut down wolfSSL */
     wolfSSL_shutdown(sslResume);
 
     /* shut down socket */

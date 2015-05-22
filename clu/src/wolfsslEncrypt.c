@@ -1,14 +1,14 @@
 /* wolfsslEncrypt.c
  *
  * Copyright (C) 2006-2014 wolfSSL Inc.
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -224,14 +224,14 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
 #endif
 #ifdef HAVE_CAMELLIA
         if (strcmp(alg, "camellia") == 0) {
-            ret = CamelliaSetKey(&camellia, key, block, iv);
+            ret = wc_CamelliaSetKey(&camellia, key, block, iv);
             if (ret != 0) {
                 printf("CamelliaSetKey failed.\n");
                 wolfsslFreeBins(input, output, NULL, NULL, NULL);
                 return ret;
             }
             if (strcmp(mode, "cbc") == 0) {
-                CamelliaCbcEncrypt(&camellia, output, input, tempMax);
+                wc_CamelliaCbcEncrypt(&camellia, output, input, tempMax);
             }
             else {
                 printf("Incompatible mode while using Camellia.\n");

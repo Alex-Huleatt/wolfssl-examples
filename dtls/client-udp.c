@@ -1,5 +1,5 @@
 '''@author AlexHuleatt
-This script modifies any of the old CyaSSL files to be updated
+This script modifies any of the old wolfSSL files to be updated
 It actually changes them, so use with discretion
 '''
 

@@ -1,14 +1,14 @@
 /* wolfsslBenchmark.c
  *
  * Copyright (C) 2006-2014 wolfSSL Inc.
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -79,10 +79,10 @@ int wolfsslBenchmark(int timer, int* option)
         start = wolfsslGetTime();
         alarm(timer);
 
-        AesSetKey(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
+        wc_AesSetKey(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
 
         while (loop) {
-            AesCbcEncrypt(&aes, cipher, plain, AES_BLOCK_SIZE);
+            wc_AesCbcEncrypt(&aes, cipher, plain, AES_BLOCK_SIZE);
             blocks++;
             currTime = wolfsslGetTime();
             stop = currTime - start;
@@ -120,7 +120,7 @@ int wolfsslBenchmark(int timer, int* option)
         start = wolfsslGetTime();
         alarm(timer);
 
-        wc_AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
+        wc_wc_AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
         while (loop) {
             wc_AesCtrEncrypt(&aes, cipher, plain, AES_BLOCK_SIZE);
             blocks++;
@@ -162,7 +162,7 @@ int wolfsslBenchmark(int timer, int* option)
 
         wc_Des3_SetKey(&des3, key, iv, DES_ENCRYPTION);
         while (loop) {
-            Des3_CbcEncrypt(&des3, cipher, plain, DES3_BLOCK_SIZE);
+            wc_Des3_CbcEncrypt(&des3, cipher, plain, DES3_BLOCK_SIZE);
             blocks++;
             currTime = wolfsslGetTime();
             stop = currTime - start;

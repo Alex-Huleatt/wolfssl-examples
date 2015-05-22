@@ -3,7 +3,7 @@ TCP/PSK Tutorial
 
 ## **Tutorial for adding Cyassl Security to a Simple Client.**
 
-1. Include the CyaSSL compatibility header:
+1. Include the wolfSSL compatibility header:
 ``#include <wolfssl/ssl.h>``
 * Change all calls from read() or recv() to wolfSSL_read(), in the simple client 
 
@@ -13,7 +13,7 @@ TCP/PSK Tutorial
 
     ``write(socked, send line,strlen(send line))`` becomes ``wolfSSL_write(ssl, send line, strlen(sendline))``
 
-4. In the main method initialize CyaSSL and WOLFSSL_CTX. 
+4. In the main method initialize wolfSSL and WOLFSSL_CTX. 
      
         wolfSSL_Init();    
         
@@ -22,7 +22,7 @@ TCP/PSK Tutorial
             return 1;
         } 
 
-5. Create the CyaSSL object after each TCP connect and associate the file descriptor with the session:
+5. Create the wolfSSL object after each TCP connect and associate the file descriptor with the session:
 
         if ((ssl = wolfSSL_new(ctx)) == NULL) {
             fprintf(stderr, "wolfSSL_new error.\n");
@@ -35,16 +35,16 @@ TCP/PSK Tutorial
             return 1;
         }
         
-6. Cleanup. After each CyaSSL object is done being used you can free it up by calling ``wolfSSL_free(ssl);``
+6. Cleanup. After each wolfSSL object is done being used you can free it up by calling ``wolfSSL_free(ssl);``
 7. When completely done using SSL/TLS, free the WOLFSSL_CTX object by 
 
     ``wolfSSL_CTX_free(CTX);``
 
     ``wolfSSL_Cleanup();``
 
-## **Adding Pre-Shared Keys (PSK) to the CyaSSL Simple Client.**
+## **Adding Pre-Shared Keys (PSK) to the wolfSSL Simple Client.**
 
-1. When configuring CyaSSL
+1. When configuring wolfSSL
 
     ``sudo ./configure --enable-psk``
 
@@ -76,11 +76,11 @@ TCP/PSK Tutorial
         		return 4;
         	}
 
-## **Adding Non-Blocking to the CyaSSL Simple Client.**  
+## **Adding Non-Blocking to the wolfSSL Simple Client.**  
 
 1. Include the fcntl.h header file. This is needed for some of the constants that will be used when dealing with non-blocking on the socket. `` #include <fcntl.h>`` 
 
-2. After the function ``wolfSSL_set_fd(ssl,sockfd)``, tell CyaSSL that you want non-blocking to be used. This is done by adding : `` wolfSSL_set_using_nonblock(ssl,1);``
+2. After the function ``wolfSSL_set_fd(ssl,sockfd)``, tell wolfSSL that you want non-blocking to be used. This is done by adding : `` wolfSSL_set_using_nonblock(ssl,1);``
 
 3. Now we much invoke the fcnt callable serve to use non-blocking. 
 
@@ -190,9 +190,9 @@ Session resumption allows a client/server pair to re-use previously generated cr
         WOLFSSL_SESSION* session   = wolfSSL_get_session(ssl);
         WOLFSSL*         sslResume = wolfSSL_new(ctx); 
 
-2. Now we must close CyaSSL SSL and close connections. Alos free the socket and ctx. 
+2. Now we must close wolfSSL SSL and close connections. Alos free the socket and ctx. 
  
-        /* shut down CyaSSL */
+        /* shut down wolfSSL */
         wolfSSL_shutdown(ssl);
 
         /* close connection */
@@ -239,7 +239,7 @@ Session resumption allows a client/server pair to re-use previously generated cr
 
 7. Now close the ssl and socket. 
 
-        /* shut down CyaSSL */
+        /* shut down wolfSSL */
         wolfSSL_shutdown(sslResume);
 
         /* shut down socket */
@@ -253,7 +253,7 @@ Session resumption allows a client/server pair to re-use previously generated cr
         
 ## **Tutorial for adding Cyassl Security and PSK (Pre shared Keys) to a Simple Server.**
  
-1. Include the CyaSSL compatibility header:
+1. Include the wolfSSL compatibility header:
     ``#include <wolfssl/ssl.h>``
 
 2. Change all calls from read() or recv() to wolfSSL_read(), in the simple server
@@ -264,7 +264,7 @@ Session resumption allows a client/server pair to re-use previously generated cr
 3. Change all calls from write() or send() to CySSL_write(), in the simple server
     ``write(sockfd, sendline, strlen(sendline))`` becomes ``wolfSSL_write(ssl, sendline, strlen(sendline))``
 
-4. Run the CyaSSL method to initalize CyaSSL
+4. Run the wolfSSL method to initalize wolfSSL
     ``wolfSSL_Init()``
 
 5. Create a ctx pointer that contains using the following process.
@@ -275,7 +275,7 @@ Session resumption allows a client/server pair to re-use previously generated cr
 	    err_sys(“wolfSSL_CTX_new error”);
     ```
 
-6. In the servers main loop for accepting clients create a WOLFSSL pointer. Once a new client is accepted create a CyaSSL object and associate that object with the socket that the client is on. After using the CyaSSL object it should be freed and also before closing the program the ctx pointer should be freed and a CyaSSL cleanup method called.
+6. In the servers main loop for accepting clients create a WOLFSSL pointer. Once a new client is accepted create a wolfSSL object and associate that object with the socket that the client is on. After using the wolfSSL object it should be freed and also before closing the program the ctx pointer should be freed and a wolfSSL cleanup method called.
     
 	```
     WOLFSSL* ssl;
@@ -289,18 +289,18 @@ Session resumption allows a client/server pair to re-use previously generated cr
     ```
 
 	
-## Now adding Pre-Shared Keys (PSK) to the CyaSSL Simple Server:
+## Now adding Pre-Shared Keys (PSK) to the wolfSSL Simple Server:
 
-The following steps are on how to use PSK in a CyaSSL server
+The following steps are on how to use PSK in a wolfSSL server
 
-1. Build CyaSSL with pre shared keys enabled executing the following commands in CyaSSL’s root directory. Depending on file locations sudo may be needed when running the commands.
+1. Build wolfSSL with pre shared keys enabled executing the following commands in wolfSSL’s root directory. Depending on file locations sudo may be needed when running the commands.
     ```
     ./configure --enable-psk
     make
     make install
     ```
 
-2. Set up the psk suit with using the CyaSSL callback, identity hint, and cipher list methods. These methods get called immediately after the process of setting up ctx.
+2. Set up the psk suit with using the wolfSSL callback, identity hint, and cipher list methods. These methods get called immediately after the process of setting up ctx.
     ```
     wolfSSL_CTX_set_psk_server_callback(ctx, my_psk_server_cb);
     wolfSSL_CTX_use_psk_identity_hint(ctx, “wolfssl server”);
@@ -310,7 +310,7 @@ The following steps are on how to use PSK in a CyaSSL server
 	>PSK-AES128-CBC-SHA256 creates the cipher list of having pre shared keys with advanced encryption security using 128 bit key 
 	>with cipher block chaining using secure hash algorithm.
 
-3. Add the my_psk_server_cb function as follows. This is a function needed that is passed in as an argument to the CyaSSL callback.
+3. Add the my_psk_server_cb function as follows. This is a function needed that is passed in as an argument to the wolfSSL callback.
     
 ```
     static inline unsigned int my_psk_client_cb(WOLFSSL* ssl, char* identity, unsigned 
@@ -501,10 +501,10 @@ Nonblocking on the server side allows for switching between multiple client conn
 1. Include the fcntl.h header file. This is needed for some of the constants that will be used when dealing with non blocking on the socket.
     ``#include <fcntl.h>``
 	
-2. After accept has found a client and an ssl object has been made and associated with the clients socket then call the CyaSSL function to set CyaSSL in non blocking mode. This is done using the following function call.
+2. After accept has found a client and an ssl object has been made and associated with the clients socket then call the wolfSSL function to set wolfSSL in non blocking mode. This is done using the following function call.
     ``wolfSSL_set_using_nonblock(ssl, 1);``
 
-3. Immediately after setting CyaSSL to use non blocking, the socket that the client is connected on needs to also be set up to be non blocking. This is done using the included fcntl.h and making the following function call.
+3. Immediately after setting wolfSSL to use non blocking, the socket that the client is connected on needs to also be set up to be non blocking. This is done using the included fcntl.h and making the following function call.
     
     ``fcntl(*sockfd, F_SETFL, O_NONBLOCK);``
 

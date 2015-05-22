@@ -368,7 +368,7 @@ Next change the size of our MSGLEN to 4096 to be more universal. This step is un
 Now move our structs of type sockaddr_in so they are within scope of the entire program. We do this in preparation for the next step which will be to bust our client handling out of main. 
 
 #####1.3.2 Create Signal Handler
-Additionally we will create a static int called cleanup here. This variable will be our signal to run CyaSSL_cleanup(); which will free the CyaSSL libraries and all allocated memory at the end of our program.
+Additionally we will create a static int called cleanup here. This variable will be our signal to run wolfSSL_cleanup(); which will free the wolfSSL libraries and all allocated memory at the end of our program.
 
 #####1.3.3 Create ctx and sig_handler Method
 Now we declare a WOLFSSL_CTX pointer and call it “ctx” for simplicity, and declare a void sig_handler method that takes a constant integer as an argument. 
@@ -426,7 +426,7 @@ void AwaitDGram()
 ```
 
 #####1.4.4 Loop shift
-With the layering on of dtls we will need to re-allocate our socket and re-bind our socket for each client connection. Since we will need to free up all memory allocated to handle these connections and additional security our loop will now change to a “while” loop instead of a for loop. We will loop on the condition that cleanup is not equal to 1. If cleanup equals 1 we will run CyaSSL_cleanup() remember?
+With the layering on of dtls we will need to re-allocate our socket and re-bind our socket for each client connection. Since we will need to free up all memory allocated to handle these connections and additional security our loop will now change to a “while” loop instead of a for loop. We will loop on the condition that cleanup is not equal to 1. If cleanup equals 1 we will run wolfSSL_cleanup() remember?
 
 So while not 1 we will keep our socket open and listening for packets to arrive!
 
@@ -506,17 +506,17 @@ act.sa_flags = 0;
 sigaction(SIGINT, &act, &oact);
 ```
 
-#####1.5.2 If Defined, turn on CyaSSL Debugging
+#####1.5.2 If Defined, turn on wolfSSL Debugging
 This is pretty self-explanatory.
 
 Figure 2.8
 `wolfSSL_Debugging_ON();`
 
-#####1.5.3 Initialize CyaSSL, Load Certificates and Keys 
+#####1.5.3 Initialize wolfSSL, Load Certificates and Keys 
 In order for these to load properly you will need to place a copy of the “certs” file one directory above your current working directory. You can find a copy of the “certs” file in wolfssl home directory. Simply copy and paste this file into the directory one up from your working directory, or change the file path in the code to search your wolfssl home directory for the certs file.
 Figure 2.9
 ```c 
-wolfSSL_Init();                      /* Initialize CyaSSL */
+wolfSSL_Init();                      /* Initialize wolfSSL */
                                                                 
 /* Set ctx to DTLS 1.2 */                                  
 if ( (ctx = wolfSSL_CTX_new(wolfDTLSv1_2_server_method())) == NULL){
@@ -637,7 +637,7 @@ printf("Connected!\n");
 ```
 We say “Connected” for user friendly interpretation, but what we really mean is: “Datagrams have arrived, a client is attempting to communicate with us… let’s perform a handshake and see if they are using DTLS version 1.2… if so then ok, we’ll read their Datagrams and see what they have to say”.
 
-#####1.7.3 Using CyaSSL to Open a Session with Client.
+#####1.7.3 Using wolfSSL to Open a Session with Client.
 First we must declare an object that points to a WOLFSSL structure. We will just call it “ssl”. We will then assign it to use the correct cypher suite as previously defined by “ctx”. We will again perform some error handling on this assignment and then set the file descriptor that will handle all incoming and outgoing messages for this session. 
 
 Once all that has been set up we are ready to check and see if our client is using an acceptable cypher suite. We accomplish this by making a call to wolfSSL_accept on our ssl object that is now pointing to the file descriptor that has an awaiting Datagram in it. ( That’s a lot i know). We’ll use some fancy calls to error get methods so that if this part fails we will have a little bit of an idea as to why it failed, and how to fix it.
@@ -708,10 +708,10 @@ This concludes Section 1 of Chapter 2 on “Layering DTLS onto a UDP Server”. 
 ###Section 2:
 
 ####2.1. Enable DTLS
-As stated in chapter 4 of the CyaSSL manual, DTLS is enabled by using the --enable-dtls build option when building CyaSSL. If you have not done so, this should be your first step.  
+As stated in chapter 4 of the wolfSSL manual, DTLS is enabled by using the --enable-dtls build option when building wolfSSL. If you have not done so, this should be your first step.  
 
-####2.2. CyaSSL Tutorial
-Walk through chapter 11 in the CyaSSL tutorial. Follow the guides for TLS/SSL using the correct CyaDTLS client method. A few adjustments for dtls:
+####2.2. wolfSSL Tutorial
+Walk through chapter 11 in the wolfSSL tutorial. Follow the guides for TLS/SSL using the correct CyaDTLS client method. A few adjustments for dtls:
 
 ####2.2.1.    
 Make sure you have the correct port defined in your program, i.e., 
@@ -734,7 +734,7 @@ wolfSSL_dtls_set_peer(ssl, &servAddr, sizeof(servAddr));
 ```
 This function will be called between where you built the sockaddr_in structure and your socket creation.
 ####2.4. Connect
-Add a CyaSSL connect function below the call to wolfSSL_set_fd() and pass the WOLFSSL* object you created as the argument. Include error checking. Example:
+Add a wolfSSL connect function below the call to wolfSSL_set_fd() and pass the WOLFSSL* object you created as the argument. Include error checking. Example:
 
 Figure 2.18            
 ```c
@@ -778,10 +778,10 @@ resumption.however, you may want to add some of the main method calls into their
 Add a few new objects at the top of main 
 
 ####1.2.1. 
-A new CyaSSL object for the resumption portion.
+A new wolfSSL object for the resumption portion.
 
 ####1.2.2. 
-A CyaSSL session object to create the session.
+A wolfSSL session object to create the session.
 
 ####1.2.3.
 A char* object to print a message that session resume is testing.
@@ -797,9 +797,9 @@ char* srTest = "testing session resume";
 After the call to your read/write function, you will need to write again. Make a call 
 to wolfSSL_write() using your original ssl object, your char* resume test object, and size of resume test object as the 3 arguments. This will send the message that you are trying to test for session resumption to the server.
 ####2.2.     
-Set your CyaSSL session object to get the session with  your Cyassl object.
+Set your wolfSSL session object to get the session with  your Cyassl object.
 ####2.3.     
-Set up a new CyaSSL object for the resumption stage using sslResume.
+Set up a new wolfSSL object for the resumption stage using sslResume.
 
 Figure 4.2 (2.1-2.3 Example code:)        
 ```c
@@ -944,7 +944,7 @@ enum {
 };
 ```
 ####2.3. Add a DTLS selection function 
-This is similar to the tcp_select() function in CyaSSL. This function will also call 
+This is similar to the tcp_select() function in wolfSSL. This function will also call 
 select():
 ```c
 /* tcp select using dtls nonblocking function*/

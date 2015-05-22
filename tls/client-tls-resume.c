@@ -2,14 +2,14 @@
  *
  * Copyright (C) 2006-2014 wolfSSL Inc.
  *
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -24,7 +24,7 @@
 #include    <string.h>
 #include    <errno.h>
 #include    <arpa/inet.h>
-#include    <wolfssl/ssl.h>          /* CyaSSL security library */
+#include    <wolfssl/ssl.h>          /* wolfSSL security library */
 
 #define MAXDATASIZE  4096           /* maximum acceptable amount of data */
 #define SERV_PORT    11111          /* define default port number */
@@ -72,7 +72,7 @@ int Security(int sock, struct sockaddr_in addr)
     WOLFSSL*         sslResume;  /* create WOLFSSL object for connection loss */
     int             ret;
 
-    wolfSSL_Init();              /* initialize CyaSSL (must be done first) */
+    wolfSSL_Init();              /* initialize wolfSSL (must be done first) */
 
     /* create and initiLize WOLFSSL_CTX structure */
     if ((ctx = wolfSSL_CTX_new(wolfTLSv1_2_client_method())) == NULL) {
@@ -80,7 +80,7 @@ int Security(int sock, struct sockaddr_in addr)
         return EXIT_FAILURE;
     }
 
-    /* load CA certificates into CyaSSL_CTX. which will verify the server */
+    /* load CA certificates into wolfSSL_CTX. which will verify the server */
     if (wolfSSL_CTX_load_verify_locations(ctx, cert, 0) != SSL_SUCCESS) {
         printf("Error loading %s. Please check the file.\n", cert);
         return EXIT_FAILURE;
@@ -93,7 +93,7 @@ int Security(int sock, struct sockaddr_in addr)
 
     wolfSSL_set_fd(ssl, sock);
     
-    /* connects to CyaSSL */
+    /* connects to wolfSSL */
     ret = wolfSSL_connect(ssl);
     if (ret != SSL_SUCCESS) {
         return ret;
@@ -128,7 +128,7 @@ int Security(int sock, struct sockaddr_in addr)
     /* sets new file discriptior */
     wolfSSL_set_fd(sslResume, sock);
     
-    /* reconects to CyaSSL */
+    /* reconects to wolfSSL */
     ret = wolfSSL_connect(sslResume);
     if (ret != SSL_SUCCESS) {
         return ret;

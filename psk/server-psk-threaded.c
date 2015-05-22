@@ -1,14 +1,14 @@
 /* server-psk-threaded.c
  * A server ecample using a multi-threaded TCP connection with PSK security. 
  *  
- * This file is part of CyaSSL.
+ * This file is part of wolfSSL.
  *
- * CyaSSL is free software; you can redistribute it and/or modify
+ * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * CyaSSL is distributed in the hope that it will be useful,
+ * wolfSSL is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <wolfssl/ssl.h>     /* include CyaSSL security */
+#include <wolfssl/ssl.h>     /* include wolfSSL security */
 #include <wolfssl/options.h> /* included for option sync */
 #include <pthread.h>        /* used for concurrent threading */
 #include <sys/socket.h>
