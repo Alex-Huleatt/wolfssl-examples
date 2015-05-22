@@ -6,10 +6,10 @@ import mimetypes
 
 RECURSIVE = False
 VERBOSE = False
-count = 0
+fcount = 0
 
 def conv(fname,di):
-	global count
+	global fcount
 	if VERBOSE:print('>',fname)
 	f = open(fname,'r+')
 	st = f.read()
@@ -20,7 +20,7 @@ def conv(fname,di):
 	f.write(st)
 	f.truncate()
 	f.close()
-	count+=1
+	fcount+=1
 
 def main():
 	global RECURSIVE, VERBOSE
@@ -48,11 +48,14 @@ def main():
 			print('-d directory/to/use : allows the script to start at the given directory, default is the current working directory')
 			print('-r : recursively search all subdirectories')
 			print('-v : verbose printing enabled')
+			print('-h : help')
 			return
 		else:
 			assert False, "unhandled option"
 
 	if VERBOSE: print("---Verbose---")
+
+
 	if RECURSIVE:
 		if VERBOSE:print("---Recursive search---")
 		for root, subFolders, files in os.walk(dire):
@@ -60,12 +63,13 @@ def main():
 				if (fl.endswith(".c") or fl.endswith(".h")):
 					conv(os.path.join(root, fl),di)
 	else:
+		if VERBOSE:print('---Local directory only---')
 		for fl in os.listdir(dire):
 			if (fl.endswith(".c" or fl.endswith(".h"))):
 				conv(fl,di)
 
 
-	print("Files potentially modified:",count)
+	print("Files potentially modified:",fcount)
 
 if __name__ == "__main__":
 	main()
