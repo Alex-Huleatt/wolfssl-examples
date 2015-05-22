@@ -68,13 +68,13 @@ def main():
 		if VERBOSE:print("---Recursive search---")
 		for root, subFolders, files in os.walk(dire):
 			for fl in files:
-				if (fl.endswith(".c") or fl.endswith(".h") or fl.endswith(".md")):
+				if (fl.endswith(".c") or fl.endswith(".h") or fl.endswith(".md") or fl.endswith(".sh")):
 					conv(os.path.join(root, fl),di)
 	else:
 		if VERBOSE:print('---Local directory only---')
 		for fl in os.listdir(dire):
-			if (fl.endswith(".c") or fl.endswith(".h") or fl.endswith(".md")):
-				conv(fl,di)
+			if (fl.endswith(".c") or fl.endswith(".h") or fl.endswith(".md") or fl.endswith(".sh")):
+				conv(os.path.join(dire,fl),di)
 
 
 	print("Files potentially modified:",fcount)
