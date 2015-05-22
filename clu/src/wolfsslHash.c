@@ -103,9 +103,9 @@ int wolfsslHash(char* in, char* out, char* alg, int size)
 #endif
 #ifdef HAVE_BLAKE2
     else if (strcmp(alg, "blake2b") == 0) {
-        ret = InitBlake2b(&hash, size);
-        ret = Blake2bUpdate(&hash, input, length);
-        ret = Blake2bFinal(&hash, output, size);
+        ret = wc_InitBlake2b(&hash, size);
+        ret = wc_Blake2bUpdate(&hash, input, length);
+        ret = wc_Blake2bFinal(&hash, output, size);
     }
 #endif
     if (ret == 0) {
