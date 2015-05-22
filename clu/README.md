@@ -12,7 +12,7 @@ recipient of the encrypted file.
 The opensslextra provides utility for a hex to binary conversion of 
 hexidecimal values.
 
-other features that can be included when configuring cyassl for 
+other features that can be included when configuring wolfssl for 
 encryption or decryption are:
 
         --enable-camellia

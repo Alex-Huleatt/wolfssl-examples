@@ -35,7 +35,7 @@ When compiling CyaSSL for use with these examples, CyaSSL will need to be
 compiled with DTLS support:
 
 ```
-cd cyassl-[version]
+cd wolfssl-[version]
 ./configure --enable-dtls
 ```
 
@@ -56,7 +56,7 @@ When compiling CyaSSL for use with these examples, CyaSSL will need to be
 compiled with PSK support:
 
 ```
-cd cyassl-[version]
+cd wolfssl-[version]
 ./configure --enable-psk
 ```
 

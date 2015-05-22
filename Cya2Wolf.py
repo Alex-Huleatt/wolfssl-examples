@@ -68,12 +68,12 @@ def main():
 		if VERBOSE:print("---Recursive search---")
 		for root, subFolders, files in os.walk(dire):
 			for fl in files:
-				if (fl.endswith(".c") or fl.endswith(".h")):
+				if (fl.endswith(".c") or fl.endswith(".h") or fl.endswith(".md")):
 					conv(os.path.join(root, fl),di)
 	else:
 		if VERBOSE:print('---Local directory only---')
 		for fl in os.listdir(dire):
-			if (fl.endswith(".c" or fl.endswith(".h"))):
+			if (fl.endswith(".c") or fl.endswith(".h") or fl.endswith(".md")):
 				conv(fl,di)
 
 
