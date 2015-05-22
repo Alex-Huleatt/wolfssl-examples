@@ -1,6 +1,7 @@
 '''@author AlexHuleatt
 This script modifies any of the old CyaSSL files to be updated
 It actually changes them, so use with discretion
+The ssl.txt file was constructed by modifying the old ssl.h header
 '''
 
 import re
