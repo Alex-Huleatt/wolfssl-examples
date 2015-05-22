@@ -16,7 +16,7 @@ fcount = 0
 def conv(fname,di):
 	'''Convert a given file using the provided mapping'''
 	global fcount
-	if VERBOSE:print('>',fname)
+	if VERBOSE:print('-->',fname)
 	f = open(fname,'r+')
 	st = f.read()
 	sorted_keys = sorted(di,key=lambda key:-1*len(key))
