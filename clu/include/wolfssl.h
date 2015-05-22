@@ -52,6 +52,7 @@
 
 #ifdef HAVE_BLAKE2
     #include <wolfssl/wolfcrypt/blake2.h>
+    #define BLAKE_DIGEST_SIZE 64
 #endif
 
 #ifdef HAVE_CAMELLIA
@@ -71,6 +72,7 @@
   * or code update 
   */
 #define VERSION 0.3
+
 
 /* encryption argument function
  *
