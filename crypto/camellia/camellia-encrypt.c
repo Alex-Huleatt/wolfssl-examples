@@ -106,7 +106,7 @@ int CamelliaEncrypt(Camellia* cam, byte* key, int size, FILE* inFile,
         return -1020;
 
     /* stretches key to fit size */
-    ret = wc_GenerateKey(&rng, key, size, salt, padCounter);
+    ret = GenerateKey(&rng, key, size, salt, padCounter);
     if (ret != 0) 
         return -1040;
 
