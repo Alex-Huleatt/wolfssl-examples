@@ -401,7 +401,7 @@ int wolfsslGenKey(RNG* rng, byte* pwdKey, int size, byte* salt, int pad)
 
     /* randomly generates salt */
 
-    ret = RNG_GenerateBlock(rng, salt, SALT_SIZE-1);
+    ret = wc_RNG_GenerateBlock(rng, salt, SALT_SIZE-1);
 
     if (ret != 0)
         return ret;
@@ -413,7 +413,7 @@ int wolfsslGenKey(RNG* rng, byte* pwdKey, int size, byte* salt, int pad)
         salt[0] = 0;
 
     /* stretches pwdKey */
-    ret = (int) PBKDF2(pwdKey, pwdKey, (int) strlen((const char*)pwdKey), salt, SALT_SIZE,
+    ret = (int) wc_PBKDF2(pwdKey, pwdKey, (int) strlen((const char*)pwdKey), salt, SALT_SIZE,
                                                             4096, size, SHA256);
     if (ret != 0)
         return ret;

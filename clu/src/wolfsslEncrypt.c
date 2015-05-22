@@ -93,7 +93,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
     length = inputLength;
 
     /* Start up the random number generator */
-    ret = (int) InitRng(&rng);
+    ret = (int) wc_InitRng(&rng);
     if (ret != 0) {
         printf("Random Number Generator failed to start.\n");
         return ret;
@@ -112,7 +112,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
      */
     if (ivCheck == 0) {
         /* IV not set, generate it */
-        ret = RNG_GenerateBlock(&rng, iv, block);
+        ret = wc_RNG_GenerateBlock(&rng, iv, block);
 
         if (ret != 0) {
             return ret;
@@ -184,15 +184,15 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
 #ifndef NO_AES
         if (strcmp(alg, "aes") == 0) {
             if (strcmp(mode, "cbc") == 0) {
-                ret = AesSetKey(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
+                ret = wc_AesSetKey(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
                 if (ret != 0) {
-                    printf("AesSetKey failed.\n");
+                    printf("wc_AesSetKey failed.\n");
                     wolfsslFreeBins(input, output, NULL, NULL, NULL);
                     return ret;
                 }
-                ret = AesCbcEncrypt(&aes, output, input, tempMax);
+                ret = wc_AesCbcEncrypt(&aes, output, input, tempMax);
                 if (ret != 0) {
-                    printf("AesCbcEncrypt failed.\n");
+                    printf("wc_AesCbcEncrypt failed.\n");
                     wolfsslFreeBins(input, output, NULL, NULL, NULL);
                     return ENCRYPT_ERROR;
                 }
@@ -200,7 +200,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
 #ifdef WOLFSSL_AES_COUNTER
             else if (strcmp(mode, "ctr") == 0) {
                 /* if mode is ctr */
-                AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
+                wc_AesSetKeyDirect(&aes, key, AES_BLOCK_SIZE, iv, AES_ENCRYPTION);
                 AesCtrEncrypt(&aes, output, input, tempMax);
             }
 #endif
@@ -208,15 +208,15 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
 #endif
 #ifndef NO_DES3
         if (strcmp(alg, "3des") == 0) {
-            ret = Des3_SetKey(&des3, key, iv, DES_ENCRYPTION);
+            ret = wc_Des3_SetKey(&des3, key, iv, DES_ENCRYPTION);
             if (ret != 0) {
-                printf("Des3_SetKey failed.\n");
+                printf("wc_Des3_SetKey failed.\n");
                 wolfsslFreeBins(input, output, NULL, NULL, NULL);
                 return ret;
             }
-            ret = Des3_CbcEncrypt(&des3, output, input, tempMax);
+            ret = wc_Des3_cbcEncrypt(&des3, output, input, tempMax);
             if (ret != 0) {
-                printf("Des3_CbcEncrypt failed.\n");
+                printf("wc_Des3_cbcEncrypt failed.\n");
                 wolfsslFreeBins(input, output, NULL, NULL, NULL);
                 return ENCRYPT_ERROR;
             }
@@ -288,7 +288,7 @@ int wolfsslEncrypt(char* alg, char* mode, byte* pwdKey, byte* key, int size,
     XMEMSET(alg, 0, size);
     XMEMSET(mode, 0 , block);
     /* Use the wolfssl free for rng */
-    FreeRng(&rng);
+    wc_FreeRng(&rng);
     wolfsslFreeBins(input, output, NULL, NULL, NULL);
     return 0;
 }

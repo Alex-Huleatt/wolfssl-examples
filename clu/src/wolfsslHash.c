@@ -78,27 +78,27 @@ int wolfsslHash(char* in, char* out, char* alg, int size)
     /* hashes using accepted algorithm */
 #ifndef NO_MD5
     if (strcmp(alg, "md5") == 0) {
-        ret = Md5Hash(input, length, output);
+        ret = wc_Md5Hash(input, length, output);
     }
 #endif
 #ifndef NO_SHA
     else if (strcmp(alg, "sha") == 0) {
-        ret = ShaHash(input, length, output);
+        ret = wc_ShaHash(input, length, output);
     }
 #endif
 #ifndef NO_SHA256
     else if (strcmp(alg, "sha256") == 0) {
-        ret = Sha256Hash(input, length, output);
+        ret = wc_Sha256Hash(input, length, output);
     }
 #endif
 #ifdef WOLFSSL_SHA384
     else if (strcmp(alg, "sha384") == 0) {
-        ret = Sha384Hash(input, length, output);
+        ret = wc_Sha384Hash(input, length, output);
     }
 #endif
 #ifdef WOLFSSL_SHA512
     else if (strcmp(alg, "sha512") == 0) {
-        ret = Sha512Hash(input, length, output);
+        ret = wc_Sha512Hash(input, length, output);
     }
 #endif
 #ifdef HAVE_BLAKE2

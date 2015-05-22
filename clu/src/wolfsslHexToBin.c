@@ -30,7 +30,7 @@
 #include <wolfssl/wolfcrypt/coding.h>
 #include <wolfssl/wolfcrypt/error-crypt.h>
 #include <stdio.h>
-#include <include/wolfssl.h>
+//#include <include/wolfssl.h>
 
 /* free up to 5 binary buffers using wolfssl abstraction layer */
 void wolfsslFreeBins(byte* b1, byte* b2, byte* b3, byte* b4, byte* b5)
