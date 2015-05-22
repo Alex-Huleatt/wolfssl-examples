@@ -25,37 +25,37 @@
 #include <termios.h>
 #include <sys/time.h>
 
-/* cyassl includes */
-#include <cyassl/options.h>
-#include <cyassl/ctaocrypt/random.h>
-#include <cyassl/ctaocrypt/pwdbased.h>
-#include <cyassl/ctaocrypt/aes.h>
-#include <cyassl/ctaocrypt/des3.h>
-#include <cyassl/ctaocrypt/error-crypt.h>
-#include <cyassl/error-ssl.h>
+/* wolfssl includes */
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/random.h>
+#include <wolfssl/wolfcrypt/pwdbased.h>
+#include <wolfssl/wolfcrypt/aes.h>
+#include <wolfssl/wolfcrypt/des3.h>
+#include <wolfssl/wolfcrypt/error-crypt.h>
+#include <wolfssl/error-ssl.h>
 
 #ifndef NO_MD5
-    #include <cyassl/ctaocrypt/md5.h>
+    #include <wolfssl/wolfcrypt/md5.h>
 #endif
 
 #ifndef NO_SHA
-    #include <cyassl/ctaocrypt/sha.h>
+    #include <wolfssl/wolfcrypt/sha.h>
 #endif
 
 #ifndef NO_SHA256
-    #include <cyassl/ctaocrypt/sha256.h>
+    #include <wolfssl/wolfcrypt/sha256.h>
 #endif
 
-#ifdef CYASSL_SHA512
-    #include <cyassl/ctaocrypt/sha512.h>
+#ifdef WOLFSSL_SHA512
+    #include <wolfssl/wolfcrypt/sha512.h>
 #endif
 
 #ifdef HAVE_BLAKE2
-    #include <cyassl/ctaocrypt/blake2.h>
+    #include <wolfssl/wolfcrypt/blake2.h>
 #endif
 
 #ifdef HAVE_CAMELLIA
-    #include <cyassl/ctaocrypt/camellia.h>
+    #include <wolfssl/wolfcrypt/camellia.h>
 #endif
 
 #ifndef UTIL_H_INCLUDED

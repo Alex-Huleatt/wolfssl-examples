@@ -491,3 +491,4 @@ yasslIP,wolfSSLIP
 yasslPort,wolfSSLPort
 cyassl,wolfssl
 ctaocrypt,wolfcrypt
+cya,wolf

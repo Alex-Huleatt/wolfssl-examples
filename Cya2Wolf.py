@@ -32,8 +32,7 @@ def main():
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "hvrd:", [])
 	except getopt.GetoptError as err:
-		# print help information and exit:
-		print(str(err)) # will print something like "option -a not recognized"
+		print(str(err))
 		usage()
 		sys.exit(2)
 	dire = '.'
@@ -58,11 +57,11 @@ def main():
 		if VERBOSE:print("---Recursive search---")
 		for root, subFolders, files in os.walk(dire):
 			for fl in files:
-				if (fl.endswith(".c")):
+				if (fl.endswith(".c") or fl.endswith(".h")):
 					conv(os.path.join(root, fl),di)
 	else:
 		for fl in os.listdir(dire):
-			if (fl.endswith(".c")):
+			if (fl.endswith(".c" or fl.endswith(".h"))):
 				conv(fl,di)
 
 

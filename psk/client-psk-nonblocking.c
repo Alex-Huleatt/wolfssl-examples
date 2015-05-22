@@ -176,7 +176,7 @@ int main(int argc, char **argv)
         return 1;
     }
     
-    wolfSSL_Init();  /* initialize cyaSSL */
+    wolfSSL_Init();  /* initialize wolfSSL */
     
             
     /* create and initialize WOLFSSL_CTX structure */
