@@ -1,7 +1,7 @@
 TCP/PSK Tutorial
 ================
 
-## **Tutorial for adding Cyassl Security to a Simple Client.**
+## **Tutorial for adding wolfSSL Security to a Simple Client.**
 
 1. Include the wolfSSL compatibility header:
 ``#include <wolfssl/ssl.h>``
@@ -251,7 +251,7 @@ Session resumption allows a client/server pair to re-use previously generated cr
         wolfSSL_Cleanup();
     
         
-## **Tutorial for adding Cyassl Security and PSK (Pre shared Keys) to a Simple Server.**
+## **Tutorial for adding wolfSSL Security and PSK (Pre shared Keys) to a Simple Server.**
  
 1. Include the wolfSSL compatibility header:
     ``#include <wolfssl/ssl.h>``
@@ -333,7 +333,7 @@ The following steps are on how to use PSK in a wolfSSL server
 ```
 
 	
-Example Makefile for Simple Cyass PSK Client:
+Example Makefile for Simple wolfSSL PSK Client:
 	
 ```
 	CC=gcc
@@ -352,7 +352,7 @@ Example Makefile for Simple Cyass PSK Client:
 		rm -f *.o client-psk
 ```
 
-The -lwolfssl will link the Cyassl Libraries to your program 
+The -lwolfssl will link the wolfSSL Libraries to your program 
 
 
 The makefile for the server is going to be similar to that of the client. If the user wants separate makefiles just make a use the same set up of the client makefile and replace every instance of client-psk with server-psk. To combine make files just add a server-psk with similar ending to each time client-psk is referenced and change the target. There will also need to be a target for when compiling all targets.
