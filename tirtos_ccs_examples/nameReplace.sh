@@ -1,7 +1,7 @@
 # nameReplace.sh
 # Copyright (C) 2015 wolfSSL Inc.
 #
-# This file is a script developed and used during re-branding from CyaSSL to wolfSSL
+# This file is a script developed and used during re-branding from wolfSSL to wolfSSL
 #
 # @author: Kaleb
 #
@@ -37,7 +37,7 @@
 #grep -ilr 'old-word' * | xargs -I@ sed -i '' 's/old-word/new-word/g' @
 ########################################################################
 
-#grep -ilr 'cya' * | xargs -I@ sed -i '' 's/cya/wolf/g' @
+#grep -ilr 'wolf' * | xargs -I@ sed -i '' 's/wolf/wolf/g' @
 #grep -ilr 'Cya' * | xargs -I@ sed -i '' 's/Cya/wolf/g' @
 #grep -ilr 'CYA' * | xargs -I@ sed -i '' 's/CYA/WOLF/g' @
 #grep -ilr 'ctao' * | xargs -I@ sed -i '' 's/ctao/wolf/g' @
