@@ -1,6 +1,7 @@
 /* wolfsslFuncs.c
  *
- * Copyright (C) 2006-2014 wolfSSL Inc.
+ * Copyright (C) 2006-2015 wolfSSL Inc.
+ *
  * This file is part of wolfSSL. (formerly known as wolfSSL)
  *
  * wolfSSL is free software; you can redistribute it and/or modify
