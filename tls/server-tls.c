@@ -21,7 +21,7 @@
  *
  * This is a super basic example of what a TCP Server secured with TLS 1.2
  * might look like. This server can also resume the session if a client 
- * nadvertantly disconnects. 
+ * inadvertantly disconnects. 
  */
 
 #include <stdio.h>
