@@ -1,4 +1,4 @@
-/* server-dtls.c 
+/* server-dtls-nonblocking.c 
  *
  * Copyright (C) 2006-2015 wolfSSL Inc.
  *
@@ -20,7 +20,7 @@
  *
  *=============================================================================
  *
- * Bare-bones example of a DTLS erver for instructional/learning purposes.
+ * Bare-bones example of a nonblocking DTLS erver for instructional/learning purposes.
  * Utilizes DTLS 1.2.
  */
 

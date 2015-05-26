@@ -20,7 +20,7 @@
  *
  *=============================================================================
  *
- * Bare-bones example of a DTLS server for instructional/learning purposes.
+ * Bare-bones example of a threaded DTLS server for instructional/learning purposes.
  * Utilizes DTLS 1.2. and multi-threading
  */
 
