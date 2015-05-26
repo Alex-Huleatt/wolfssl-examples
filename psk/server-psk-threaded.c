@@ -1,7 +1,9 @@
 /* server-psk-threaded.c
  * A server ecample using a multi-threaded TCP connection with PSK security. 
  *  
- * This file is part of wolfSSL.
+ * Copyright (C) 2006-2015 wolfSSL Inc.
+ *
+ * This file is part of wolfSSL. (formerly known as CyaSSL)
  *
  * wolfSSL is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
